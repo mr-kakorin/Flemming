@@ -1,6 +1,6 @@
 #include "antivirus.h"
 #include <iostream>
-
+#include <ctime>
 
 bool Antivirus::isDirectoryExists(LPCWSTR directoryNameToCheck)
 {
@@ -60,12 +60,31 @@ void Antivirus::ToScan(const char* inString)
 	}
 }
 
-void Antivirus::startLoging(std::ofstream file)
+void Antivirus::startLoging(std::ofstream &file)
 {
 	file.open("Log.txt");
 }
-void Antivirus::writeLog(const char* fileName)
-{
 
+void Antivirus::endLoging(std::ofstream &file)
+{
+	file.close();
+}
+
+char* getCurrentDataAndTime()
+{
+	time_t rawtime;
+	struct tm * timeinfo;
+	time(&rawtime);
+	timeinfo = localtime(&rawtime);
+	return asctime(timeinfo);
+}
+
+void Antivirus::writeLog(const char* fileName, bool infected)
+{
+	startLoging(OutLog);
+	//loging here	
+	OutLog << fileName << (infected ? " : infected" : " : safe") << getCurrentDataAndTime()<<'\n';
+	//loging here
+	endLoging(OutLog);
 }
 

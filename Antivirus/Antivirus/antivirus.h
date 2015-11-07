@@ -19,12 +19,17 @@ class Antivirus
 	/*return type of directory:file, folder,notexist */
 	PathTo isPathToFile(const char* stringToCheck);
 
-	/*write infected or not infected file*/
-	void writeLog(const char* fileName);
-	
-	void startLoging(std::ofstream file);
+	/*open file stream*/
+	void startLoging(std::ofstream &file);
 
-	void endLoging(std::ofstream file);
+	/*close file stream*/
+	void endLoging(std::ofstream &file);
+	
+	/*write infected or not infected file*/
+	void writeLog(const char* fileName, bool infected);
+		
+	/*out file for log's*/
+	static std::ofstream OutLog;
 
 public:
 
