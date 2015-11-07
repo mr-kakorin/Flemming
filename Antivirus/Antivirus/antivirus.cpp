@@ -70,20 +70,22 @@ void Antivirus::endLoging(std::ofstream &file)
 	file.close();
 }
 
-char* getCurrentDataAndTime()
+char* getCurrentDateAndTime(char *currentDateAndTimeStr)
 {
 	time_t rawtime;
-	struct tm * timeinfo;
+	tm timeinfo;
 	time(&rawtime);
-	timeinfo = localtime(&rawtime);
-	return asctime(timeinfo);
+	localtime_s(&timeinfo, &rawtime);
+	asctime_s(currentDateAndTimeStr, 26, &timeinfo);
+	return currentDateAndTimeStr;
 }
 
 void Antivirus::writeLog(const char* fileName, bool infected)
 {
 	startLoging(OutLog);
 	//loging here	
-	OutLog << fileName << (infected ? " : infected" : " : safe") << getCurrentDataAndTime()<<'\n';
+	char currentDateAndTimeStr[26];
+	OutLog << fileName << (infected ? " : infected" : " : safe") << getCurrentDateAndTime(currentDateAndTimeStr) << '\n';
 	//loging here
 	endLoging(OutLog);
 }

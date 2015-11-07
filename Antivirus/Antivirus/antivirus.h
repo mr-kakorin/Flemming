@@ -43,6 +43,7 @@ public:
 	const char* AskArguments();
 };
 
+char* getCurrentDateAndTime(char* currentDateAndTimeStr);
 
 #endif
 
