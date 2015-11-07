@@ -24,7 +24,7 @@ public:
 	Antivirus(){}
 	~Antivirus(){}
 
-	/*get string from console, check exist path and give next instructions*/
+	/*check exist path and give next instructions*/
 	void ToScan(const char* inString);
 
 	/*if app started w\o arguments of console ask user to input path*/
