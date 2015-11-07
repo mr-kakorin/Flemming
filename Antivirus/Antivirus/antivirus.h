@@ -4,7 +4,7 @@
 //addiction list
 
 #include <windows.h>
-
+#include <fstream>
 
 class Antivirus
 {   
@@ -18,6 +18,13 @@ class Antivirus
 
 	/*return type of directory:file, folder,notexist */
 	PathTo isPathToFile(const char* stringToCheck);
+
+	/*write infected or not infected file*/
+	void writeLog(const char* fileName);
+	
+	void startLoging(std::ofstream file);
+
+	void endLoging(std::ofstream file);
 
 public:
 

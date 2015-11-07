@@ -59,3 +59,13 @@ void Antivirus::ToScan(const char* inString)
 		break;
 	}
 }
+
+void Antivirus::startLoging(std::ofstream file)
+{
+	file.open("Log.txt");
+}
+void Antivirus::writeLog(const char* fileName)
+{
+
+}
+
