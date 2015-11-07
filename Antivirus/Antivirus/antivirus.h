@@ -29,7 +29,7 @@ class Antivirus
 	void writeLog(const char* fileName, bool infected);
 		
 	/*out file for log's*/
-	static std::ofstream OutLog;
+	std::ofstream OutLog;
 
 public:
 
