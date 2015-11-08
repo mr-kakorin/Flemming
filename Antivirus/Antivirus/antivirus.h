@@ -5,7 +5,7 @@
 
 #include <windows.h>
 #include <fstream>
-
+#include "signature_analyzer.h"
 class Antivirus
 {   
 	bool isDirectoryExists(LPCWSTR directoryNameToCheck);
