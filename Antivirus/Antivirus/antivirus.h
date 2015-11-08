@@ -14,7 +14,7 @@ class Antivirus
 
 	LPCWSTR charToLpcwstr(const char* stringToConvert);
 
-	enum PathTo{ PathToFile, PathToFolder, NotExist };
+	enum PathTo{ PathToFolder, PathToFile, NotExist };
 
 	/*return type of directory:file, folder,notexist */
 	PathTo isPathToFile(const char* stringToCheck);

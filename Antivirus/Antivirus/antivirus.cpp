@@ -23,7 +23,7 @@ LPCWSTR Antivirus::charToLpcwstr(const char* stringToConvert)
 
 const char* Antivirus::AskArguments()
 {
-	std::cout<<"Input path to folder or file to scan:";
+	std::cout<<"Input path to folder or file to scan: ";
 	char* inString = new char[128];
 	std::cin.getline(inString,127);
 	return inString;
@@ -32,15 +32,17 @@ const char* Antivirus::AskArguments()
 Antivirus::PathTo Antivirus::isPathToFile(const char* stringToCheck)
 {
 	LPCWSTR path = charToLpcwstr(stringToCheck);
-	if (isFileExists(path))
-	{
-		return PathToFile;
-	}	
-	
+
 	if (isDirectoryExists(path))
 	{
 		return PathToFolder;
 	}	
+
+	if (isFileExists(path))
+	{
+		return PathToFile;
+	}
+
 	return NotExist;
 }
 
@@ -49,13 +51,35 @@ void Antivirus::ToScan(const char* inString)
 	switch (isPathToFile(inString))
 	{
 	case PathToFile:
+		std::cout << "Checking the file \"" << inString << "\"..." << std::endl;
 		//smth happens here
+		std::cout << "There could be some viruses, but our program can't find them just yet :(" << std::endl; //temporary message
 		break;
 	case PathToFolder:
+		std::cout << "Checking the foulder \"" << inString << "\"..." << std::endl;
 		//smth happens here
+		std::cout << "There could be some viruses, but our program can't find them just yet :(" << std::endl; //temporary message
 		break;
 	case NotExist:
-		//smth happens here
+		std::cout << "There is no such file or directory. Continue(Y/N)? ";
+		char continueAnswer;
+		do
+		{
+			std::cin.get(continueAnswer);
+			std::cin.sync();
+			switch (toupper(continueAnswer))
+			{
+			case 'Y': 
+				break;
+			case 'N': 
+				exit(0);
+				break;
+			default: 
+				std::cout << "Please type \"Y\" or \"N\": ";
+				break;
+			}
+
+		} while (toupper(continueAnswer) != 'Y');
 		break;
 	}
 }
