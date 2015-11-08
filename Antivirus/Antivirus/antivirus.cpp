@@ -42,14 +42,17 @@ Antivirus::PathTo Antivirus::isPathToFile(const char* stringToCheck)
 
 void Antivirus::ToScan(const char* inString)
 {
+	 signature_analyzer analizator;
 	switch (isPathToFile(inString))
 	{
 	case PathToFile:
 		std::cout << "Checking the file \"" << inString << "\"..." << std::endl; 
-		signature_analyzer analyzer;
-		analyzer.Scanfile(inString); //добавьте вывод там сами если функция возв 1 - то вирус
-		//smth happens here
-		std::cout << "There could be some viruses, but our program can't find them just yet :(" << std::endl; //temporary message
+		if (analizator.Scanfile(inString))
+			std::cout << "File infected!" << std::endl;
+	
+		else {
+			std::cout << "There could be some viruses, but our program can't find them just yet :(" << std::endl;
+		} //temporary message
 		break;
 	case PathToFolder:
 		std::cout << "Checking the foulder \"" << inString << "\"..." << std::endl;

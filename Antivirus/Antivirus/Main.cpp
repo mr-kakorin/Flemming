@@ -1,9 +1,12 @@
 #include "antivirus.h"
 #include <stdio.h>
 #include <iostream>
-
+//#include "signature_analyzer.h"
 int main(int argc, char* argv[])
-{
+{/*
+	signature_analyzer analiz;
+	const char* name = "D:\Antivirus\Antivirus\Antivirus\virus";
+	analiz.Scanfile(name);*/
 	Antivirus application;
 	std::cout << std::endl;
 	switch (argc){

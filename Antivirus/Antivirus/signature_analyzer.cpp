@@ -54,6 +54,7 @@ int CALLBACK_MSG_FILE = 0;
 int callback_function_forfile(int message, void* message_data, void* user_data)
 
 {
+	CALLBACK_MSG_FILE = 0;
 	if (message == CALLBACK_MSG_RULE_MATCHING) CALLBACK_MSG_FILE = 1;
 
 	return message;
@@ -61,12 +62,15 @@ int callback_function_forfile(int message, void* message_data, void* user_data)
 int signature_analyzer::Scanfile(const char * filename)   // НУЖНО ДОБАВИТЬ МНОЖЕСТВО ПРОВЕРОК НА ОШИБКИ!!!!
 {
 	
-
+	yr_initialize();
 	YR_RULES* rules = NULL;
-    yr_rules_load("all_rules", &rules); // загружаем этот скомпиленный файл правил специальный
+    yr_rules_load(Librarry_file, &rules); // загружаем этот скомпиленный файл правил специальный
 
 	yr_rules_scan_file(rules, filename, ScanType,callback_function_forfile, NULL, 0);
+	yr_finalize();
+
 	return CALLBACK_MSG_FILE;
+
 
 }
 
