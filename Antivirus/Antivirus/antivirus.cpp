@@ -61,25 +61,7 @@ void Antivirus::ToScan(const char* inString)
 		std::cout << "There could be some viruses, but our program can't find them just yet :(" << std::endl; //temporary message
 		break;
 	case NotExist:
-		std::cout << "There is no such file or directory. Continue(Y/N)? ";
-		char continueAnswer;
-		do
-		{
-			std::cin.get(continueAnswer);
-			std::cin.sync();
-			switch (toupper(continueAnswer))
-			{
-			case 'Y': 
-				break;
-			case 'N': 
-				exit(0);
-				break;
-			default: 
-				std::cout << "Please type \"Y\" or \"N\": ";
-				break;
-			}
-
-		} while (toupper(continueAnswer) != 'Y');
+		std::cout << "There is no such file or directory.";
 		break;
 	}
 }
