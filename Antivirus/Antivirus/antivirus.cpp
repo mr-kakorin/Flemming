@@ -21,13 +21,7 @@ LPCWSTR Antivirus::charToLpcwstr(const char* stringToConvert)
 	return result;
 }
 
-const char* Antivirus::AskArguments()
-{
-	std::cout<<"Input path to folder or file to scan: ";
-	char* inString = new char[128];
-	std::cin.getline(inString,127);
-	return inString;
-}
+
 
 Antivirus::PathTo Antivirus::isPathToFile(const char* stringToCheck)
 {
