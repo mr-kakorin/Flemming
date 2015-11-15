@@ -6,6 +6,7 @@
 #include <windows.h>
 #include <fstream>
 #include "signature_analyzer.h"
+#include <vector>
 class Antivirus
 {   
 	bool isDirectoryExists(LPCWSTR directoryNameToCheck);
@@ -31,13 +32,16 @@ class Antivirus
 	/*out file for log's*/
 	std::ofstream OutLog;
 
+	void GetFoldersAndFilesList(std::string path,
+		std::vector<std::string> &folders,
+		std::vector<std::string> &files);
 public:
 
 	Antivirus(){}
 	~Antivirus(){}
 
 	/*check exist path and give next instructions*/
-	void ToScan(const char* inString);
+	void ToScan(const char* inString, signature_analyzer analiz);
 
 
 

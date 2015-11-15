@@ -3,11 +3,17 @@
 #include <iostream>
 //#include "signature_analyzer.h"
 int main(int argc, char* argv[])
-{/*
-	signature_analyzer analiz;
-	const char* name = "D:\Antivirus\Antivirus\Antivirus\virus";
-	analiz.Scanfile(name);*/
+{
 	Antivirus application;
+
+	signature_analyzer analiz;	
+	const char* name = "D:\\win8.1\\games\\Alexander\\install.log";
+	application.ToScan(name, analiz);
+	
+	//std::cout << analiz.Scanfile(name);
+	
+
+
 	std::cout << std::endl;
 	switch (argc){
 	case 1:
@@ -34,7 +40,7 @@ int main(int argc, char* argv[])
 	case 3:
 		if (strcmp(argv[1], application.checkArgumentString) == 0)
 		{
-			application.ToScan(argv[2]);
+			application.ToScan(argv[2],analiz);
 		}
 		else
 		{

@@ -1,11 +1,9 @@
 #include "signature_analyzer.h"
 
-
-
 signature_analyzer::signature_analyzer()
 {
 	ScanType = 0;
-	Librarry_file = "signaturesDB";
+	Librarry_file = "SignaturesDB";
 }
 
 
@@ -14,15 +12,12 @@ signature_analyzer::~signature_analyzer()
 
 }
 
-
-
 int signature_analyzer::SetScanType(int ScanType)
 {
 	
 	return (ScanType==NULL)? NULL : SCAN_FLAGS_FAST_MODE;
 
 }
-
 
 char * signature_analyzer::SetLibrarry_file(char * filename) // мсфмн днаюбхрэ лмнфеярбн опнбепнй мю ньхайх!!!!
 {
