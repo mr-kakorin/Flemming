@@ -1,13 +1,10 @@
 #include "antivirus.h"
 #include <stdio.h>
 #include <iostream>
-//#include "signature_analyzer.h"
 int main(int argc, char* argv[])
 {
 	Antivirus application;
-
 	SignatureAnalyzer analiz;	
-	std::cout << std::endl;
 
 	switch (argc) {
 	case 1:

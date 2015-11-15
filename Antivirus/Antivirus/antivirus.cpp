@@ -40,32 +40,37 @@ Antivirus::PathTo Antivirus::isPathToFile(const char* stringToCheck)
 
 void Antivirus::ToScan(const char* inString, SignatureAnalyzer analiz)
 {
-	std::vector<std::string> folder;
+	std::vector<std::string> folders;
 	std::vector<std::string> files;
+	std::string tmp;
 	switch (isPathToFile(inString))
 	{
 	case PathToFile:
 		std::cout << "Checking the file \"" << inString << "\"..." << std::endl; 
+
 		if (analiz.Scanfile(inString))
-			std::cout << "File infected!" << std::endl;
-	
+			std::cout << "File infected!\n" << std::endl;	
 		else {
-			std::cout << "There could be some viruses, but our program can't find them just yet :(" << std::endl;
+			std::cout << "No viruses\n" << std::endl;
 		} //temporary message
 		break;
 	case PathToFolder:
-		folder.push_back((std::string)(inString));
-		GetFoldersAndFilesList((std::string)(inString), folder, files);
-		std::cout << "Checking the foulder \"" << inString << "\"..." << std::endl;
-		for (int i = 0; i < files.size() - 1; ++i)
+		GetFoldersAndFilesList((std::string)(inString), folders, files);
+		//std::cout << "Checking the foulder \"" << inString << "\"..." << std::endl;
+				
+		for (int i = 0; i < folders.size();++i)
 		{
-			//ToScan(files.at(i).data, analiz);
+			tmp = inString + folders.at(i) + "\\";
+			ToScan(tmp.data(), analiz);
 		}
-		//smth happens here
-		std::cout << "There could be some viruses, but our program can't find them just yet :(" << std::endl; //temporary message
+		for (int i = 0; i < files.size(); ++i)
+		{
+			tmp = inString+files.at(i);
+			ToScan(tmp.data(), analiz);
+		}			
 		break;
 	case NotExist:
-		std::cout << "There is no such file or directory.";
+		std::cout << inString <<" : There is no such file or directory.\n";
 		break;
 	}
 }

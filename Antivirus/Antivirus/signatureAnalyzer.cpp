@@ -2,10 +2,9 @@
 
 SignatureAnalyzer::SignatureAnalyzer()
 {
-	ScanType = 0;
-	Librarry_file = "C:\\Antivirus\\SignaturesDB.db";
+	ScanType = SCAN_FLAGS_FAST_MODE;
+	Librarry_file = "C:\\Antivirus\\SignaturesDB";
 }
-
 
 SignatureAnalyzer::~SignatureAnalyzer()
 {
@@ -13,59 +12,59 @@ SignatureAnalyzer::~SignatureAnalyzer()
 }
 
 int SignatureAnalyzer::SetScanType(int ScanType)
-{
-	
+{	
 	return (ScanType==NULL)? NULL : SCAN_FLAGS_FAST_MODE;
-
 }
 
-char * SignatureAnalyzer::SetLibrarry_file(char * filename) // Ќ”∆Ќќ ƒќЅј¬»“№ ћЌќ∆≈—“¬ќ ѕ–ќ¬≈–ќ  Ќј ќЎ»Ѕ »!!!!
+/*
+this func compile signatures.yara to db of signatures that we would use
+*/
+char * SignatureAnalyzer::SetLibrarry_file(char * filename)
 {
 	FILE* rule_1;
-	YR_CALLBACK_FUNC callback;
-	fopen_s(&rule_1, "clamav.yara", "r");
+	
+	fopen_s(&rule_1, "rule1.yara", "r");
 
-	YR_COMPILER* cmplr = NULL; // компил€тор правил в специальный вид
+	YR_COMPILER* cmplr = NULL; 
 
 	YR_RULES* rules = NULL;
 
 	yr_initialize();
 
-	yr_compiler_create(&cmplr); // нужно только при первом запуске дл€ компил€ции всех правил в специальный вид
+	yr_compiler_create(&cmplr); 
 
-	yr_compiler_add_file(cmplr, rule_1, NULL, NULL);// нужно только при первом запуске дл€ компил€ции всех правил в специальный вид
+	printf("%d", yr_compiler_add_file(cmplr, rule_1, NULL, "text"));
 
-	yr_compiler_get_rules(cmplr, &rules);// нужно только при первом запуске дл€ компил€ции всех правил в специальный вид
+	yr_compiler_get_rules(cmplr, &rules);
+	
+	yr_rules_save(rules, filename);
 
-
-	yr_rules_save(rules, filename);// нужно только при первом запуске дл€ компил€ции всех правил в специальный вид
-
-	yr_rules_destroy(rules); // нужно только при первом запуске дл€ компил€ции всех правил в специальный вид
-	yr_compiler_destroy(cmplr); // нужно только при первом запуске дл€ компил€ции всех правил в специальный вид
+	yr_rules_destroy(rules); 
+	yr_compiler_destroy(cmplr); 
     yr_finalize();
 	return filename;
 }
 int CALLBACK_MSG_FILE = 0;
 int callback_function_forfile(int message, void* message_data, void* user_data)
-
 {
-	CALLBACK_MSG_FILE = 0;
-	if (message == CALLBACK_MSG_RULE_MATCHING) CALLBACK_MSG_FILE = 1;
-
-	return message;
+	CALLBACK_MSG_FILE = 0;	
+	if (message == CALLBACK_MSG_RULE_MATCHING)
+	{
+		CALLBACK_MSG_FILE = 1;
+		return CALLBACK_ABORT;
+	}
+	return CALLBACK_CONTINUE;
 }
-int SignatureAnalyzer::Scanfile(const char * filename)   // Ќ”∆Ќќ ƒќЅј¬»“№ ћЌќ∆≈—“¬ќ ѕ–ќ¬≈–ќ  Ќј ќЎ»Ѕ »!!!!
-{
-	
+
+int SignatureAnalyzer::Scanfile(const char * filename)  
+{	
 	yr_initialize();
 	YR_RULES* rules = NULL;
-    yr_rules_load(Librarry_file, &rules); // загружаем этот скомпиленный файл правил специальный
-
-	yr_rules_scan_file(rules, filename, ScanType,callback_function_forfile, NULL, 0);
+    yr_rules_load(Librarry_file, &rules);
+	if (ERROR_CALLBACK_ERROR == yr_rules_scan_file(rules, filename, ScanType, callback_function_forfile, NULL, 0))
+		printf("%d", 777);
 	yr_finalize();
 
 	return CALLBACK_MSG_FILE;
-
-
 }
 
