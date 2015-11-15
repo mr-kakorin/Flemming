@@ -6,15 +6,9 @@ int main(int argc, char* argv[])
 {
 	Antivirus application;
 
-	signature_analyzer analiz;	
-	const char* name = "D:\\win8.1\\games\\Alexander\\install.log";
-	application.ToScan(name, analiz);
-	
-	//std::cout << analiz.Scanfile(name);
-	
-
-
+	SignatureAnalyzer analiz;	
 	std::cout << std::endl;
+
 	switch (argc){
 	case 1:
 		std::cout << application.wrongArgumentsNumberErrorString;

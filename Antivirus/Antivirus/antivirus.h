@@ -5,7 +5,7 @@
 
 #include <windows.h>
 #include <fstream>
-#include "signature_analyzer.h"
+#include "signatureAnalyzer.h"
 #include <vector>
 class Antivirus
 {   
@@ -41,13 +41,13 @@ public:
 	~Antivirus(){}
 
 	/*check exist path and give next instructions*/
-	void ToScan(const char* inString, signature_analyzer analiz);
+	void ToScan(const char* inString, SignatureAnalyzer analiz);
 
 
 
 	/*constants implementation*/
 	
-	const char *wrongArgumentsNumberErrorString = "Wrong number of arguments. Use \"-help\" for information.\n";
+	const char* wrongArgumentsNumberErrorString = "Wrong number of arguments. Use \"-help\" for information.\n";
 
 	const char *wrongArgumentsErrorString = "Wrong arguments. Use \"-help\" for information.\n";
 

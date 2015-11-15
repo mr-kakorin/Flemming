@@ -1,10 +1,10 @@
 #pragma once
 #include "yara.h"
-class signature_analyzer
+class SignatureAnalyzer
 {
 public:
-	signature_analyzer();
-	~signature_analyzer();
+	SignatureAnalyzer();
+	~SignatureAnalyzer();
 	int Scanfile(const char *);
 	char* SetLibrarry_file(char *);
 private:

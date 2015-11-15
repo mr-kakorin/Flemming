@@ -1,25 +1,25 @@
-#include "signature_analyzer.h"
+#include "signatureAnalyzer.h"
 
-signature_analyzer::signature_analyzer()
+SignatureAnalyzer::SignatureAnalyzer()
 {
 	ScanType = 0;
-	Librarry_file = "SignaturesDB";
+	Librarry_file = "C:\\Antivirus\\SignaturesDB.db";
 }
 
 
-signature_analyzer::~signature_analyzer()
+SignatureAnalyzer::~SignatureAnalyzer()
 {
 
 }
 
-int signature_analyzer::SetScanType(int ScanType)
+int SignatureAnalyzer::SetScanType(int ScanType)
 {
 	
 	return (ScanType==NULL)? NULL : SCAN_FLAGS_FAST_MODE;
 
 }
 
-char * signature_analyzer::SetLibrarry_file(char * filename) // мсфмн днаюбхрэ лмнфеярбн опнбепнй мю ньхайх!!!!
+char * SignatureAnalyzer::SetLibrarry_file(char * filename) // мсфмн днаюбхрэ лмнфеярбн опнбепнй мю ньхайх!!!!
 {
 	FILE* rule_1;
 	YR_CALLBACK_FUNC callback;
@@ -54,7 +54,7 @@ int callback_function_forfile(int message, void* message_data, void* user_data)
 
 	return message;
 }
-int signature_analyzer::Scanfile(const char * filename)   // мсфмн днаюбхрэ лмнфеярбн опнбепнй мю ньхайх!!!!
+int SignatureAnalyzer::Scanfile(const char * filename)   // мсфмн днаюбхрэ лмнфеярбн опнбепнй мю ньхайх!!!!
 {
 	
 	yr_initialize();

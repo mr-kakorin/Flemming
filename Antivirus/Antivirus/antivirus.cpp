@@ -1,7 +1,6 @@
 #include "antivirus.h"
 #include <iostream>
 #include <ctime>
-#include <vector>
 
 bool Antivirus::isDirectoryExists(LPCWSTR directoryNameToCheck)
 {
@@ -39,8 +38,10 @@ Antivirus::PathTo Antivirus::isPathToFile(const char* stringToCheck)
 	return NotExist;
 }
 
-void Antivirus::ToScan(const char* inString, signature_analyzer analiz)
+void Antivirus::ToScan(const char* inString, SignatureAnalyzer analiz)
 {
+	std::vector<std::string> folder;
+	std::vector<std::string> files;
 	switch (isPathToFile(inString))
 	{
 	case PathToFile:
@@ -53,8 +54,13 @@ void Antivirus::ToScan(const char* inString, signature_analyzer analiz)
 		} //temporary message
 		break;
 	case PathToFolder:
+		folder.push_back((std::string)(inString));
+		GetFoldersAndFilesList((std::string)(inString), folder, files);
 		std::cout << "Checking the foulder \"" << inString << "\"..." << std::endl;
-
+		for (int i = 0; i < files.size() - 1; ++i)
+		{
+			//ToScan(files.at(i).data, analiz);
+		}
 		//smth happens here
 		std::cout << "There could be some viruses, but our program can't find them just yet :(" << std::endl; //temporary message
 		break;
@@ -96,7 +102,8 @@ void Antivirus::writeLog(const char* fileName, bool infected)
 
 void Antivirus::GetFoldersAndFilesList(std::string path,
 	std::vector<std::string> &folders,
-	std::vector<std::string> &files) {
+	std::vector<std::string> &files)
+{
 	WIN32_FIND_DATA FindFileData;
 	HANDLE hf;
 	path += "/*";

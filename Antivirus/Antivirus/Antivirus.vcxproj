@@ -87,11 +87,11 @@
   <ItemGroup>
     <ClCompile Include="antivirus.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="signature_analyzer.cpp" />
+    <ClCompile Include="signatureAnalyzer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="antivirus.h" />
-    <ClInclude Include="signature_analyzer.h" />
+    <ClInclude Include="signatureAnalyzer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
