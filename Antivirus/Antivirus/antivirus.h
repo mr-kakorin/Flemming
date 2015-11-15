@@ -5,8 +5,10 @@
 
 #include <windows.h>
 #include <fstream>
-#include "signatureAnalyzer.h"
 #include <vector>
+#include <string>
+#include "signatureAnalyzer.h"
+
 class Antivirus
 {   
 	bool isDirectoryExists(LPCWSTR directoryNameToCheck);
@@ -47,26 +49,27 @@ public:
 
 	/*constants implementation*/
 	
-	const char* wrongArgumentsNumberErrorString = "Wrong number of arguments. Use \"-help\" for information.\n";
+	const std::string helpArgumentString = "-help";
 
-	const char *wrongArgumentsErrorString = "Wrong arguments. Use \"-help\" for information.\n";
+	const std::string checkArgumentString = "-check";
 
-	const char *helpArgumentString = "-help";
+	const std::string checkSystemFoulderArgumentString = "-checksys";
 
-	const char *helpOutputText = "-check <path> - check file or directory\n"
-								 "-checksys - check system directory\n"
-								 "-info - about program\n";
+	const std::string infoArgumentString = "-info";
 
-	const char *infoArgumentString = "-info";
+	const std::string wrongArgumentsNumberErrorString = "Wrong number of arguments. Use " + helpArgumentString + " for information.\n";
 
-	const char *infoOutputText = "Antivirus ver. 0.0.1\n"
-								 "AMCP SPBU 2015\n";
+	const std::string wrongArgumentsErrorString = "Wrong arguments. Use " + helpArgumentString + " for information.\n";
 
-	const char *checkArgumentString = "-check";
+	const std::string helpOutputText = checkArgumentString + " <path> - check file or directory\n" + 
+									   checkSystemFoulderArgumentString + " - check system directory\n" +
+									   infoArgumentString + " - about program\n";
 
-	const char *checkNoPathErrorText = "Please type path to file or directory to check.\n";
+	const std::string infoOutputText = "Antivirus ver. 0.0.1\n"
+									   "AMCP SPBU 2015\n";
 
-	const char *checkSystemFoulderArgumentString = "-checksys";
+	const std::string checkNoPathErrorText = "Please type path to file or directory to check.\n";
+
 };
 
 char* getCurrentDateAndTime(char* currentDateAndTimeStr);

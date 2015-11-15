@@ -9,30 +9,39 @@ int main(int argc, char* argv[])
 	SignatureAnalyzer analiz;	
 	std::cout << std::endl;
 
-	switch (argc){
+	switch (argc) {
 	case 1:
 		std::cout << application.wrongArgumentsNumberErrorString;
 		break;
 	case 2:
-		if (strcmp(argv[1], application.helpArgumentString) == 0)
+		if (argv[1] == application.helpArgumentString)
 		{
 			std::cout << application.helpOutputText;
 		}
-		if (strcmp(argv[1], application.infoArgumentString) == 0)
-		{
-			std::cout << application.infoOutputText;
-		}
-		if (strcmp(argv[1], application.checkArgumentString) == 0)
-		{
-			std::cout << application.checkNoPathErrorText;
-		}
-		if (strcmp(argv[1], application.checkSystemFoulderArgumentString) == 0)
-		{
-			//check system foulder
+		else {
+			if (argv[1] == application.infoArgumentString)
+			{
+				std::cout << application.infoOutputText;
+			}
+			else {
+				if (argv[1] == application.checkArgumentString)
+				{
+					std::cout << application.checkNoPathErrorText;
+				}
+				else {
+					if (argv[1] == application.checkSystemFoulderArgumentString)
+					{
+						//check system foulder
+					}
+					else {
+						std::cout << application.wrongArgumentsErrorString;
+					}
+				}
+			}
 		}
 		break;
 	case 3:
-		if (strcmp(argv[1], application.checkArgumentString) == 0)
+		if (argv[1] == application.checkArgumentString)
 		{
 			application.ToScan(argv[2],analiz);
 		}
