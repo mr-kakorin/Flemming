@@ -1,54 +1,57 @@
 #include "antivirus.h"
 #include <stdio.h>
 #include <iostream>
+
 int main(int argc, char* argv[])
 {
 	Antivirus application;
-	SignatureAnalyzer analiz;	
+	
+	//test// application.ToScan("D:\\Games\\Hearthstone\\");
+
 
 	switch (argc) {
 	case 1:
-		std::cout << application.wrongArgumentsNumberErrorString;
+		Antivirus::outMessageToUser(application.wrongArgumentsNumberErrorString);
 		break;
 	case 2:
-		if (argv[1] == application.helpArgumentString)
+		if (Antivirus::isThisCommand(application.helpArgumentString, argv[1]))
 		{
-			std::cout << application.helpOutputText;
+			Antivirus::outMessageToUser(application.helpOutputText);
 		}
 		else {
-			if (argv[1] == application.infoArgumentString)
+			if (Antivirus::isThisCommand(application.infoArgumentString, argv[1]))
 			{
-				std::cout << application.infoOutputText;
+				Antivirus::outMessageToUser(application.infoOutputText);
 			}
 			else {
-				if (argv[1] == application.checkArgumentString)
+				if (Antivirus::isThisCommand(application.checkArgumentString, argv[1]))
 				{
-					std::cout << application.checkNoPathErrorText;
+					Antivirus::outMessageToUser(application.checkNoPathErrorText);
 				}
 				else {
-					if (argv[1] == application.checkSystemFoulderArgumentString)
+					if (Antivirus::isThisCommand(application.checkSystemFoulderArgumentString, argv[1]))
 					{
 						//check system foulder
 					}
 					else {
-						std::cout << application.wrongArgumentsErrorString;
+						Antivirus::outMessageToUser(application.wrongArgumentsErrorString);
 					}
 				}
 			}
 		}
 		break;
 	case 3:
-		if (argv[1] == application.checkArgumentString)
+		if (Antivirus::isThisCommand(application.checkArgumentString, argv[1]))
 		{
-			application.ToScan(argv[2],analiz);
+			application.ToScan(argv[2]);
 		}
 		else
 		{
-			std::cout << application.wrongArgumentsErrorString;
+			Antivirus::outMessageToUser(application.wrongArgumentsErrorString);
 		}
 		break;
 	default:
-		std::cout << application.wrongArgumentsNumberErrorString;
+		Antivirus::outMessageToUser(application.wrongArgumentsNumberErrorString);
 		break;
 	}
 	return 0;

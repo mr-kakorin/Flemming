@@ -7,8 +7,8 @@
 #include <fstream>
 #include <vector>
 #include <string>
-#include "signatureAnalyzer.h"
-
+#include "yara.h"
+#include <iomanip>
 class Antivirus
 {   
 	bool isDirectoryExists(LPCWSTR directoryNameToCheck);
@@ -37,14 +37,43 @@ class Antivirus
 	void GetFoldersAndFilesList(std::string path,
 		std::vector<std::string> &folders,
 		std::vector<std::string> &files);
+
+	class SignatureAnalyzer
+	{
+	public:
+		SignatureAnalyzer();
+		~SignatureAnalyzer();
+		int Scanfile(const char *);
+		char* SetLibrarry_file(char *);
+	private:
+		int ScanType;
+		char *Librarry_file;
+		int SetScanType(int);		
+		friend int callback_function_forfile(int, void*, void*);
+	};
+
+	std::pair<std::vector<std::string>, std::vector<std::string>> SeeFilesFolders(const char*);
+
+	std::string getFullNameFile(const std::string&, const char*)const;
+	std::string getFullNameFolder(const std::string&, const char*)const;
+
+	SignatureAnalyzer analiz;
+
+
 public:
 
 	Antivirus(){}
 	~Antivirus(){}
 
 	/*check exist path and give next instructions*/
-	void ToScan(const char* inString, SignatureAnalyzer analiz);
+	void ToScan(const char* inString);
 
+
+	static void outMessageToUser(const std::string&);
+
+	static bool isThisCommand(const std::string&, const char*);
+
+	char* getCurrentDateAndTime(char* currentDateAndTimeStr);
 
 
 	/*constants implementation*/
@@ -71,8 +100,5 @@ public:
 	const std::string checkNoPathErrorText = "Please type path to file or directory to check.\n";
 
 };
-
-char* getCurrentDateAndTime(char* currentDateAndTimeStr);
-
 #endif
 

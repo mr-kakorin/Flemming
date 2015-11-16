@@ -82,16 +82,15 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>libyara32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="antivirus.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="signatureAnalyzer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="antivirus.h" />
-    <ClInclude Include="signatureAnalyzer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
