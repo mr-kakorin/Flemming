@@ -9,15 +9,50 @@
 #include <string>
 #include "yara.h"
 #include <iomanip>
+/**
+	\brief API antivirus
+
+	Class for working with the methods of antivirus
+*/
 class Antivirus
 {   
+	/**
+		\brief Checking existence of a directory
+
+		\param[directoryNameToCheck] Name of a checking directory
+		\return true - if the directory exists, false - if directory doesn't exists
+	*/
 	bool isDirectoryExists(LPCWSTR directoryNameToCheck);
 
+
+	/**
+		\brief Checking existence of a file
+
+		\param[directoryNameToCheck] Name of a checking file
+		\return true - if the file exists, false - if file doesn't exists
+	*/
 	bool isFileExists(LPCWSTR fileNameToCheck);
 
+
+	/**
+		\brief Convert a string of char to LPCWSTR
+		\param[stringToConvert] a pointer to an array of chars
+		\return LPCWSTR string
+	*/
 	LPCWSTR charToLpcwstr(const char* stringToConvert);
 
-	enum PathTo{ PathToFolder, PathToFile, NotExist };
+	
+	/**
+		\brief What is this enum?
+
+		Some dedscription about this enum. TODO: make it!
+	*/
+	enum PathTo { 
+		PathToFolder,	///< Text1
+		PathToFile,		///< Text2
+		NotExist 		///< Text3
+	};
+
 
 	/*return type of directory:file, folder,notexist */
 	PathTo isPathToFile(const char* stringToCheck);
