@@ -37,7 +37,7 @@ int main(int argc, char* argv[])
 {
 	Antivirus application;
 	
-	//test// application.ToScan("D:\\Games\\Hearthstone\\");
+	//test// application.ToScan("D:\\Viruses\\");
 
 	switch (argc) {
 	case 1:

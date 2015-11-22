@@ -20,7 +20,6 @@
 #include "antivirus.h"
 #include <iostream>
 #include <ctime>
-#include <omp.h>
 
 bool Antivirus::isDirectoryExists(LPCWSTR directoryNameToCheck)
 {
@@ -57,81 +56,47 @@ Antivirus::PathTo Antivirus::isPathToFile(const char* stringToCheck)
 
 	return NotExist;
 }
-
+char signatureName[128];
 void Antivirus::ToScan(const char* inString)
 {
 	std::vector<std::string> folders;
 	std::vector<std::string> files;
-	
+	std::pair<std::vector<std::string>, std::vector<std::string>> subFilesFolders = std::make_pair(folders, files);
+
 	switch (isPathToFile(inString))
 	{
 	case PathToFile:
-		std::cout << std::endl << "Checking the file \"" << inString << "\"..." << std::endl; 
+		std::cout << "Checking the file \"" << inString << "\t";
 
 		if (analiz.Scanfile(inString))
 		{
-			std::cout << "File infected!\n" << std::endl;
-			writeLog(inString, true);
+			std::cout << "File infected!" << std::endl;
+			writeLog(inString, true, signatureName);
 		}
-		else 
+
+		else
 		{
-			std::cout << "No viruses\n" << std::endl;
-			writeLog(inString, false);
+			std::cout << "No viruses" << std::endl;
+			writeLog(inString, false, NULL);
 		} //temporary message
-		
+
 		break;
 	case PathToFolder:
 
-		//filling vector's of subfolders and files
-		folders = SeeFilesFolders(inString).first;
-	    files = SeeFilesFolders(inString).second;		
-		double start_time, end_time;
+		subFilesFolders = SeeFilesFolders(inString);
 
-/*PARALLEL*/
-
-		omp_set_num_threads(2);
-
-		start_time = omp_get_wtime();
-
-#pragma omp parallel for
-
-		for (int i = 0; i < folders.size();++i)
-		{						
-			ToScan(getFullNameFolder(folders.at(i),inString).data());
-		}
-
-#pragma omp parallel for
-
-		for (int i = 0; i < files.size(); ++i)
+		for (int i = 0; i < subFilesFolders.first.size();++i)
 		{
-			ToScan(getFullNameFile(files.at(i), inString).data());
-		}			
-
-		end_time = omp_get_wtime();
-
-		std::cout << "time parallel = " << start_time - end_time;
-
-/*SIMPLE*/
-
-		start_time = omp_get_wtime();
-
-		for (int i = 0; i < folders.size(); ++i)
-		{
-			ToScan(getFullNameFolder(folders.at(i), inString).data());
+			ToScan(getFullNameFolder(subFilesFolders.first.at(i), inString).data());
 		}
-
-		for (int i = 0; i < files.size(); ++i)
+		for (int i = 0; i < subFilesFolders.second.size(); ++i)
 		{
-			ToScan(getFullNameFile(files.at(i), inString).data());
+			ToScan(getFullNameFile(subFilesFolders.second.at(i), inString).data());
 		}
-
-		end_time = omp_get_wtime();
-
-		std::cout << "time simple = " << start_time - end_time;
 
 		break;
 	case NotExist:
-		std::cout << std::endl << inString <<" : There is no such file or directory.\n";
+		std::cout << std::endl << inString << " : There is no such file or directory.\n";
 		break;
 	}
 }
@@ -139,9 +104,9 @@ void Antivirus::ToScan(const char* inString)
 std::pair<std::vector<std::string>, std::vector<std::string>> Antivirus::SeeFilesFolders(const char* inString)
 {
 	std::vector<std::string> folders;
-	std::vector<std::string> files;	
+	std::vector<std::string> files;
 	GetFoldersAndFilesList((std::string)(inString), folders, files);
-	return std::make_pair(folders,files);
+	return std::make_pair(folders, files);
 }
 
 std::string Antivirus::getFullNameFile(const std::string& fName, const char* inString)const
@@ -176,12 +141,12 @@ char* Antivirus::getCurrentDateAndTime(char *currentDateAndTimeStr)
 	return currentDateAndTimeStr;
 }
 
-void Antivirus::writeLog(const char* fileName, bool infected)
+void Antivirus::writeLog(const char* fileName, bool infected, char* signatureName)
 {
 	startLoging(OutLog);
 	//loging here	
-	char currentDateAndTimeStr[26];	
-	OutLog << fileName << (infected ? " : infected " : " : safe ") << getCurrentDateAndTime(currentDateAndTimeStr) << '\n';
+	char currentDateAndTimeStr[26];
+	OutLog << fileName << (infected ? " : suspected on " : " : safe ") << (signatureName != NULL ? signatureName : "") << " " << getCurrentDateAndTime(currentDateAndTimeStr);
 	//loging here
 	endLoging(OutLog);
 }
@@ -234,7 +199,7 @@ bool Antivirus::isThisCommand(const std::string& message, const char* consoleArg
 Antivirus::SignatureAnalyzer::SignatureAnalyzer()
 {
 	ScanType = SCAN_FLAGS_FAST_MODE;
-	Librarry_file = "\SignaturesDB";
+	Librarry_file = "C:\\Antivirus\\SignaturesDB";
 }
 
 Antivirus::SignatureAnalyzer::~SignatureAnalyzer()
@@ -283,6 +248,7 @@ int callback_function_forfile(int message, void* message_data, void* user_data)
 	if (message == CALLBACK_MSG_RULE_MATCHING)
 	{
 		CALLBACK_MSG_FILE = 1;
+		strcpy_s(signatureName, (*((YR_RULE*)message_data)).identifier);
 		return CALLBACK_ABORT;
 	}
 	return CALLBACK_CONTINUE;
@@ -293,10 +259,8 @@ int Antivirus::SignatureAnalyzer::Scanfile(const char * filename)
 	yr_initialize();
 	YR_RULES* rules = NULL;
 	yr_rules_load(Librarry_file, &rules);
-	if (ERROR_CALLBACK_ERROR == yr_rules_scan_file(rules, filename, ScanType, callback_function_forfile, NULL, 0))
-		printf("%d", 777);
+	yr_rules_scan_file(rules, filename, ScanType, callback_function_forfile, NULL, 0);
 	yr_finalize();
 
 	return CALLBACK_MSG_FILE;
 }
-
