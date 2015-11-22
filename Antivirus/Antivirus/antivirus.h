@@ -140,20 +140,16 @@ class Antivirus
 		/// brief Atavism, need to create base of signature
 		char* SetLibrarry_file(char *);
 	private:
+		int ScanType; ///> Type of scanning
+		char *Librarry_file; ///> Atavism
 		/**
-		
-		*/
-		int ScanType;
-		/**
-
-		*/
-		char *Librarry_file;
-		/**
-
+			@brief Function for set type of scan
 		*/
 		int SetScanType(int);		
 		/**
+			@brief Call back function
 
+			Start after full scan file, detect type of infect and write info to log-file
 		*/
 		friend int callback_function_forfile(int, void*, void*);
 	};
