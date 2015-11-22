@@ -20,7 +20,6 @@
 #include "antivirus.h"
 #include <iostream>
 #include <ctime>
-#include <omp.h>
 
 bool Antivirus::isDirectoryExists(LPCWSTR directoryNameToCheck)
 {
@@ -85,49 +84,15 @@ void Antivirus::ToScan(const char* inString)
 		//filling vector's of subfolders and files
 		folders = SeeFilesFolders(inString).first;
 	    files = SeeFilesFolders(inString).second;		
-		double start_time, end_time;
-
-/*PARALLEL*/
-
-		omp_set_num_threads(2);
-
-		start_time = omp_get_wtime();
-
-#pragma omp parallel for
-
+				
 		for (int i = 0; i < folders.size();++i)
 		{						
 			ToScan(getFullNameFolder(folders.at(i),inString).data());
 		}
-
-#pragma omp parallel for
-
 		for (int i = 0; i < files.size(); ++i)
 		{
 			ToScan(getFullNameFile(files.at(i), inString).data());
 		}			
-
-		end_time = omp_get_wtime();
-
-		std::cout << "time parallel = " << start_time - end_time;
-
-/*SIMPLE*/
-
-		start_time = omp_get_wtime();
-
-		for (int i = 0; i < folders.size(); ++i)
-		{
-			ToScan(getFullNameFolder(folders.at(i), inString).data());
-		}
-
-		for (int i = 0; i < files.size(); ++i)
-		{
-			ToScan(getFullNameFile(files.at(i), inString).data());
-		}
-
-		end_time = omp_get_wtime();
-
-		std::cout << "time simple = " << start_time - end_time;
 
 		break;
 	case NotExist:
@@ -234,7 +199,7 @@ bool Antivirus::isThisCommand(const std::string& message, const char* consoleArg
 Antivirus::SignatureAnalyzer::SignatureAnalyzer()
 {
 	ScanType = SCAN_FLAGS_FAST_MODE;
-	Librarry_file = "\SignaturesDB";
+	Librarry_file = "C:\\Antivirus\\SignaturesDB";
 }
 
 Antivirus::SignatureAnalyzer::~SignatureAnalyzer()
