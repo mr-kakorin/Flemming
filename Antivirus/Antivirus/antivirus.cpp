@@ -83,6 +83,7 @@ void Antivirus::ToScan(const char* inString)
 		break;
 	case PathToFolder:
 
+
 		subFilesFolders = SeeFilesFolders(inString);
 
 		for (int i = 0; i < subFilesFolders.first.size();++i)
@@ -92,8 +93,7 @@ void Antivirus::ToScan(const char* inString)
 		for (int i = 0; i < subFilesFolders.second.size(); ++i)
 		{
 			ToScan(getFullNameFile(subFilesFolders.second.at(i), inString).data());
-		}
-
+		}		
 		break;
 	case NotExist:
 		std::cout << std::endl << inString << " : There is no such file or directory.\n";
