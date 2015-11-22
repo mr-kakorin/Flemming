@@ -26,12 +26,6 @@ int main(int argc, char* argv[])
 	Antivirus application;
 	
 	//test// application.ToScan("D:\\Games\\Hearthstone\\");
-	
-	std::cout << std::endl;
-	std::cout << "Antivirus Copyright (C) 2015" << std::endl;
-	std::cout << "This is free software, and you are welcome to redistribute" << std::endl;
-	std::cout << "program comes with ABSOLUTELY NO WARRANTY" << std::endl;
-	std::cout << std::endl;
 
 	switch (argc) {
 	case 1:

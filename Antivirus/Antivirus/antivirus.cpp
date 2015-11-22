@@ -6,15 +6,15 @@
 
 	This file is part of Antivirus.
 
-    Antivirus is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+	Antivirus is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
 */
 
 #include "antivirus.h"
@@ -65,7 +65,7 @@ void Antivirus::ToScan(const char* inString)
 	switch (isPathToFile(inString))
 	{
 	case PathToFile:
-		std::cout << "Checking the file \"" << inString << "\"..." << std::endl; 
+		std::cout << std::endl << "Checking the file \"" << inString << "\"..." << std::endl; 
 
 		if (analiz.Scanfile(inString))
 		{
@@ -96,7 +96,7 @@ void Antivirus::ToScan(const char* inString)
 
 		break;
 	case NotExist:
-		std::cout << inString <<" : There is no such file or directory.\n";
+		std::cout << std::endl << inString <<" : There is no such file or directory.\n";
 		break;
 	}
 }

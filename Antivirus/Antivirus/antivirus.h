@@ -140,15 +140,18 @@ public:
 
 	const std::string infoArgumentString = "-info";
 
-	const std::string wrongArgumentsNumberErrorString = "Wrong number of arguments. Use " + helpArgumentString + " for information.\n";
+	const std::string wrongArgumentsNumberErrorString = "\nWrong number of arguments. Use " + helpArgumentString + " for information.\n";
 
-	const std::string wrongArgumentsErrorString = "Wrong arguments. Use " + helpArgumentString + " for information.\n";
+	const std::string wrongArgumentsErrorString = "\nWrong arguments. Use " + helpArgumentString + " for information.\n";
 
-	const std::string helpOutputText = checkArgumentString + " <path> - check file or directory\n" + 
+	const std::string helpOutputText = "\n" + checkArgumentString + " <path> - check file or directory\n" + 
 									   checkSystemFoulderArgumentString + " - check system directory\n" +
 									   infoArgumentString + " - about program\n";
 
-	const std::string infoOutputText = "Antivirus ver. 0.0.1\n"
+	const std::string infoOutputText = "\nAntivirus ver 0.0.1 Copyright(C) 2015\n" 
+									   "This is free software, and you are welcome to redistribute\n"
+									   "it under certain conditions.\n" 
+									   "Program comes with ABSOLUTELY NO WARRANTY.\n"
 									   "AMCP SPBU 2015\n";
 
 	const std::string checkNoPathErrorText = "Please type path to file or directory to check.\n";
