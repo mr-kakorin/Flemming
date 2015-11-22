@@ -38,7 +38,7 @@ class Antivirus
 	/**
 		@brief Checking existence of a directory
 
-		@param[directoryNameToCheck] Name of a checking directory
+		@param[in] directoryNameToCheck Name of a checking directory
 		@return true - if the directory exists, false - if directory doesn't exists
 	*/
 	bool isDirectoryExists(LPCWSTR directoryNameToCheck);
@@ -47,7 +47,7 @@ class Antivirus
 	/**
 		@brief Checking existence of a file
 
-		@param[directoryNameToCheck] Name of a checking file
+		@param[in] directoryNameToCheck Name of a checking file
 		@return true - if the file exists, false - if file doesn't exists
 	*/
 	bool isFileExists(LPCWSTR fileNameToCheck);
@@ -55,7 +55,7 @@ class Antivirus
 
 	/**
 		@brief Convert a string of char to LPCWSTR
-		@param[stringToConvert] a pointer to an array of chars
+		@param[in] stringToConvert a pointer to an array of chars
 		@return LPCWSTR string
 	*/
 	LPCWSTR charToLpcwstr(const char* stringToConvert);
@@ -119,14 +119,41 @@ public:
 	Antivirus(){}
 	~Antivirus(){}
 
-	/*check exist path and give next instructions*/
+	/**
+		@brief  Start scan the specified directory
+		@param[in] inString Path to directory for scan
+
+		This function starts scan the directory and uses std::cout for
+		write out process information.
+	*/
 	void ToScan(const char* inString);
 
 
+	/**
+		@brief Function print message in output device
+		@param[in] message Text of message
+
+		The function uses std::output now
+	*/
 	static void outMessageToUser(const std::string&);
 
+
+	/**
+		@brief Crazy function, just amazing
+		@param[in] message Hm, first string
+		@param[in] consoleArgument OK, second string
+		@return true - if first string equals second string, else - false
+
+		This function replaces operator '=='
+	*/
 	static bool isThisCommand(const std::string&, const char*);
 
+
+	/**
+		@brief Returns current date and time
+		@param[in] currentDateAndTimeStr
+		@return Current date and time in string format
+	*/
 	char* getCurrentDateAndTime(char* currentDateAndTimeStr);
 
 
