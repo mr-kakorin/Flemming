@@ -21,6 +21,18 @@
 #include <stdio.h>
 #include <iostream>
 
+/*
+	@brief Processing of entered command
+
+	If type one argument: Error. The antivirus must launch with one or more parametres
+	Two arguments:
+		It can be command: '-checksys', '-help', '-info'
+		Else it error command
+
+	Three arguments:
+		It can be command '-check', third argument is path to check file or folder
+		Else it error command
+*/
 int main(int argc, char* argv[])
 {
 	Antivirus application;

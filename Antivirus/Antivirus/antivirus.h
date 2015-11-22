@@ -62,53 +62,119 @@ class Antivirus
 
 	
 	/**
-		@brief What is this enum?
-
-		Some dedscription about this enum. TODO: make it!
+		@brief Type of file from path
 	*/
 	enum PathTo { 
-		PathToFolder,	///< Text1
-		PathToFile,		///< Text2
-		NotExist 		///< Text3
+		PathToFolder,	///< The path to folder
+		PathToFile,		///< The path to file
+		NotExist 		///< The path to nonexist file
 	};
 
 
-	/*return type of directory:file, folder,notexist */
+	/**
+		@brief Detect type of path to file
+
+		@param[in] stringToCheck Path to file
+		@return Type of path to file
+	*/
 	PathTo isPathToFile(const char* stringToCheck);
 
-	/*open file stream*/
+
+	/**
+		@brief Open log-file
+		@param[in] file Object of file
+
+		The function open log-file stream
+	*/
 	void startLoging(std::ofstream &file);
 
-	/*close file stream*/
+	/**
+		@brief Close log-file
+		@param[in] file Object of file
+
+		The function close log-file stream
+	*/
 	void endLoging(std::ofstream &file);
 	
-	/*write infected or not infected file*/
+	
+	/**
+		@brief Write information about checked file
+		@param[in] fileName Name of checked file
+		@param[in] infected True if file infected
+
+		Write information to log-file about checked file.
+		Format: Date of checking file, path to file and filename, infected/safe
+	*/
 	void writeLog(const char* fileName, bool infected);
 		
 	/*out file for log's*/
 	std::ofstream OutLog;
 
+	/**
+		@brief Get folder contain
+		@param[in] path Path to folder
+		@param[in] folders To this vector write folder list
+		@param[in] files To this vector write file list
+
+		Scan the path and return list of folders and files in the directory
+	*/
 	void GetFoldersAndFilesList(std::string path,
 		std::vector<std::string> &folders,
 		std::vector<std::string> &files);
 
+	/**
+		@brief Out wrap under YARA API
+
+		This class make custom wrap under Yara library
+	*/
 	class SignatureAnalyzer
 	{
 	public:
 		SignatureAnalyzer();
 		~SignatureAnalyzer();
+		/**
+			@brief Start scan file
+			@return  Type of result of scan file
+		*/
 		int Scanfile(const char *);
+		/// brief Atavism, need to create base of signature
 		char* SetLibrarry_file(char *);
 	private:
+		/**
+		
+		*/
 		int ScanType;
+		/**
+
+		*/
 		char *Librarry_file;
+		/**
+
+		*/
 		int SetScanType(int);		
+		/**
+
+		*/
 		friend int callback_function_forfile(int, void*, void*);
 	};
 
+	/// Wrap under get Folders and Files list
 	std::pair<std::vector<std::string>, std::vector<std::string>> SeeFilesFolders(const char*);
 
+	/**
+		@brief Get fullname of file
+		@param[in] fName Name of file
+		@param[in] inString Path to file
+		@return Full name of file with full path
+	*/
 	std::string getFullNameFile(const std::string&, const char*)const;
+
+	/**
+		@brief Get fullname of folder
+		@param[in] fName Name of folder
+		@param[in] inString Path to the folder
+		@return Full name of folder with full path
+	*/
 	std::string getFullNameFolder(const std::string&, const char*)const;
 
 	SignatureAnalyzer analiz;
@@ -139,12 +205,12 @@ public:
 
 
 	/**
-		@brief Crazy function, just amazing
-		@param[in] message Hm, first string
-		@param[in] consoleArgument OK, second string
+		@brief Check equal of two string
+		@param[in] message First string
+		@param[in] consoleArgument Second string
 		@return true - if first string equals second string, else - false
 
-		This function replaces operator '=='
+		This function replaces operator '==' for two string
 	*/
 	static bool isThisCommand(const std::string&, const char*);
 
@@ -159,28 +225,33 @@ public:
 
 	/*constants implementation*/
 	
+	// The command for show help information
 	const std::string helpArgumentString = "-help";
-
+	/// The command for start check file or folder
 	const std::string checkArgumentString = "-check";
-
+	/// The command for start check system folders
 	const std::string checkSystemFoulderArgumentString = "-checksys";
-
+	/// The command for show information about programm
 	const std::string infoArgumentString = "-info";
 
+	/// Text of error with arguments number
 	const std::string wrongArgumentsNumberErrorString = "\nWrong number of arguments. Use " + helpArgumentString + " for information.\n";
 
+	/// Text of error with argument
 	const std::string wrongArgumentsErrorString = "\nWrong arguments. Use " + helpArgumentString + " for information.\n";
 
+	/// Help text
 	const std::string helpOutputText = "\n" + checkArgumentString + " <path> - check file or directory\n" + 
 									   checkSystemFoulderArgumentString + " - check system directory\n" +
 									   infoArgumentString + " - about program\n";
 
+	/// Information about programm
 	const std::string infoOutputText = "\nAntivirus ver 0.0.1 Copyright(C) 2015\n" 
 									   "This is free software, and you are welcome to redistribute\n"
 									   "it under certain conditions.\n" 
 									   "Program comes with ABSOLUTELY NO WARRANTY.\n"
 									   "AMCP SPBU 2015\n";
-
+	/// Text of error if path to file is not exists
 	const std::string checkNoPathErrorText = "Please type path to file or directory to check.\n";
 
 };
