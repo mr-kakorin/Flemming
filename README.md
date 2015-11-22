@@ -1,3 +1,5 @@
+Full documentation is here: https://goo.gl/tjkPFe
+
 ###How to use:
 1. Clone this repository on your computer.
 2. Open Visual Studio project in your Visual Studio.
