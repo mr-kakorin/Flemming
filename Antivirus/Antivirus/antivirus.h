@@ -26,8 +26,8 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include <omp.h>
 #include "yara.h"
-#include <iomanip>
 /**
 	@brief API antivirus
 
