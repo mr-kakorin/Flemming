@@ -11,6 +11,12 @@
   3. '-checksys' - scan system directories. The result of scan will be written to the log-file.
   4. '-info' - show information about the program build.
 
+###Instructions for developers:
+  1. Import 'antivirus.h', 'yara.h', 'libyara32.lib' and full folder 'yara'.
+  2. Include 'antivirus.h' in your code
+  3. Create antivirus object
+  4. Launch "YourAntivirusObject.ToScan( PATH_TO_FILE )". PATH_TO_FILE - string with path to scan file or folder. Result of scan write in std::stream::cout
+
 ###Team (group 232):
 * Kakorin Nikita - team leader / programmer
 * Korolev Evgeny - programmer
