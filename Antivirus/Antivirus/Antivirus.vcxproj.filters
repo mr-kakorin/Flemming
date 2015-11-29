@@ -27,6 +27,9 @@
     <ClCompile Include="logger.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
+    <ClCompile Include="quarantine.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="antivirus.h">
@@ -36,6 +39,9 @@
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
     <ClInclude Include="logger.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="quarantine.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
   </ItemGroup>

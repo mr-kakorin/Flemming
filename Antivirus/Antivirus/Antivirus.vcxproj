@@ -90,11 +90,13 @@
     <ClCompile Include="antivirus.cpp" />
     <ClCompile Include="logger.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="quarantine.cpp" />
     <ClCompile Include="SignatureAnalyzer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="antivirus.h" />
     <ClInclude Include="logger.h" />
+    <ClInclude Include="quarantine.h" />
     <ClInclude Include="SignatureAnalyzer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

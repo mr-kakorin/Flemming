@@ -20,11 +20,10 @@
 #include "logger.h"
 
 Logger::Logger(const std::string inputLogFileName) : logFileName(inputLogFileName) {}
+
 #include <fstream>
 #include <ctime>
 #include "logger.h"
-
-Logger::Logger(const std::string inputLogFileName): logFileName(inputLogFileName) {}
 
 char* Logger::getCurrentDateAndTime(char *currentDateAndTimeStr)
 {
