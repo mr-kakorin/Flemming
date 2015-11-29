@@ -1,6 +1,7 @@
 #ifndef _LOGGER_H_
 #define _LOGGER_H_
 
+
 #include <ctime>
 #include <fstream>
 #include <string>
@@ -47,3 +48,6 @@ public:
 };
 
 #endif
+
+#endif
+

@@ -17,8 +17,8 @@
 	GNU General Public License for more details.
 */
 
-#ifndef ANTIVIRUS
-#define ANTIVIRUS
+#ifndef _ANTIVIRUS_H_
+#define _ANTIVIRUS_H_
 
 //addiction list
 
@@ -79,7 +79,6 @@ class Antivirus
 	@return Type of path to file
 	*/
 	PathTo isPathToFile(const char* stringToCheck);
-
 
 	/**
 	@brief Get folder contain
