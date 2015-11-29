@@ -1,4 +1,4 @@
-Full documentation is here: https://goo.gl/oHti17
+Full documentation is here: https://goo.gl/DhXpsm
 
 ###How to use:
 1. Clone this repository on your computer.
