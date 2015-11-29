@@ -19,11 +19,13 @@ public:
 	@return  Type of result of scan file
 	*/
 	int Scanfile(const char *, std::vector<std::string> files);
-	
+
+	int ScanMem();
+private:	
+
 	static char signatureName[128]; ///> Name of signature in string format
 	static int CALLBACK_MSG_FILE; ///> Data of callback message
 
-private:	
 	static Logger* log; ///> LogFile object
 	/*
 		@brief Returns full name with full path to file
@@ -41,4 +43,6 @@ private:
 	Start after full scan file, detect type of infect and write info to log-file
 	*/
 	static int callback_function_forfile(int, void*, void*);
+
+	static int callback_function_formem(int, void*, void*);
 };
