@@ -19,14 +19,15 @@ public:
 	@return  Type of result of scan file
 	*/
 	int Scanfile(const char *, std::vector<std::string> files);
-	/// brief Atavism, need to create base of signature
 	
-
-	static char signatureName[128];
-	static int CALLBACK_MSG_FILE;
+	static char signatureName[128]; ///> Name of signature in string format
+	static int CALLBACK_MSG_FILE; ///> Data of callback message
 
 private:	
-	static Logger* log;
+	static Logger* log; ///> LogFile object
+	/*
+		@brief Returns full name with full path to file
+	*/
 	std::string getFullNameFile(const std::string&, const char*)const;
 	int ScanType; ///> Type of scanning
 	char *Librarry_file; ///> Atavism

@@ -25,16 +25,28 @@
 #include <fstream>
 #include <string>
 
+/**
+	@brief Object for work with log files
+
+	API for log file
+*/
 class Logger
 {
-	/*out file for log's*/
-	const std::string logFileName;
-	std::ofstream outLog;
+	const std::string logFileName; ///>  Name of log-file in String format
+	std::ofstream outLog; ///> Stream for out log-file
 
 public:
 
-	Logger(std::string logFileName);	
+	/**
+		@brief LogObject constructor
+		@param[in] logFileName Name of logfile in string format
+	*/
+	Logger(std::string logFileName);
+	/**
+		@brief Default Constructor
+	*/
 	Logger():logFileName("log.txt"){}
+	
 	/**
 	@brief Returns current date and time
 	@param[in] currentDateAndTimeStr
@@ -67,6 +79,3 @@ public:
 };
 
 #endif
-
-#endif
-
