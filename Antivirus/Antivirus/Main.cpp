@@ -19,8 +19,7 @@
 
 #include "antivirus.h"
 #include <stdio.h>
-#include <iostream>
-
+#include <omp.h>
 /*
 	@brief Processing of entered command
 
@@ -33,11 +32,18 @@
 		It can be command '-check', third argument is path to check file or folder
 		Else it error command
 */
+
 int main(int argc, char* argv[])
 {
 	Antivirus application;
-	
-	//test// application.ToScan("D:\\Viruses\\");
+
+	double start_time, end_time;
+	start_time = omp_get_wtime();
+	//test//
+	application.ToScan("D:\\Viruses\\");
+	//test
+	end_time = omp_get_wtime();
+	printf("time parallel = %f", (end_time - start_time));
 
 	switch (argc) {
 	case 1:

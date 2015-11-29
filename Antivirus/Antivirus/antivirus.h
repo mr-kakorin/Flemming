@@ -26,8 +26,9 @@
 #include <fstream>
 #include <vector>
 #include <string>
-#include "yara.h"
 #include <iomanip>
+#include "SignatureAnalyzer.h"
+
 /**
 @brief API antivirus
 
@@ -81,36 +82,6 @@ class Antivirus
 
 
 	/**
-	@brief Open log-file
-	@param[in] file Object of file
-
-	The function open log-file stream
-	*/
-	void startLoging(std::ofstream &file);
-
-	/**
-	@brief Close log-file
-	@param[in] file Object of file
-
-	The function close log-file stream
-	*/
-	void endLoging(std::ofstream &file);
-
-
-	/**
-	@brief Write information about checked file
-	@param[in] fileName Name of checked file
-	@param[in] infected True if file infected
-
-	Write information to log-file about checked file.
-	Format: Path to file and filename, suspected/safe, date of checking file
-	*/
-	void writeLog(const char* fileName, bool infected, char* signatureName);
-
-	/*out file for log's*/
-	std::ofstream OutLog;
-
-	/**
 	@brief Get folder contain
 	@param[in] path Path to folder
 	@param[in] folders To this vector write folder list
@@ -122,37 +93,7 @@ class Antivirus
 		std::vector<std::string> &folders,
 		std::vector<std::string> &files);
 
-	/**
-	@brief Out wrap under YARA API
 
-	This class make custom wrap under Yara library
-	*/
-	class SignatureAnalyzer
-	{
-	public:
-		SignatureAnalyzer();
-		~SignatureAnalyzer();
-		/**
-		@brief Start scan file
-		@return  Type of result of scan file
-		*/
-		int Scanfile(const char *);
-		/// brief Atavism, need to create base of signature
-		char* SetLibrarry_file(char *);
-	private:
-		int ScanType; ///> Type of scanning
-		char *Librarry_file; ///> Atavism
-		/**
-		@brief Function for set type of scan
-		*/
-		int SetScanType(int);
-		/**
-		@brief Call back function
-
-		Start after full scan file, detect type of infect and write info to log-file
-		*/
-		friend int callback_function_forfile(int, void*, void*);
-	};
 
 	/// Wrap under get Folders and Files list
 	std::pair<std::vector<std::string>, std::vector<std::string>> SeeFilesFolders(const char*);
@@ -172,14 +113,13 @@ class Antivirus
 	@return Full name of folder with full path
 	*/
 	std::string getFullNameFolder(const std::string&, const char*)const;
-
-	SignatureAnalyzer analiz;
+	
+	static SignatureAnalyzer* analyzer;
 
 
 public:
-
-	Antivirus() {}
-	~Antivirus() {}
+	Antivirus();
+	~Antivirus();
 
 	/**
 	@brief  Start scan the specified directory
@@ -209,15 +149,6 @@ public:
 	This function replaces operator '==' for two string
 	*/
 	static bool isThisCommand(const std::string&, const char*);
-
-
-	/**
-	@brief Returns current date and time
-	@param[in] currentDateAndTimeStr
-	@return Current date and time in string format
-	*/
-	char* getCurrentDateAndTime(char* currentDateAndTimeStr);
-
 
 	/*constants implementation*/
 
@@ -251,5 +182,6 @@ public:
 	const std::string checkNoPathErrorText = "Please type path to file or directory to check.\n";
 
 };
+
 #endif
 

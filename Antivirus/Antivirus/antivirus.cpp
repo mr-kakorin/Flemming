@@ -16,10 +16,11 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
 */
-
-#include "antivirus.h"
 #include <iostream>
+#include "antivirus.h"
 #include <ctime>
+
+SignatureAnalyzer* Antivirus::analyzer = new SignatureAnalyzer;
 
 bool Antivirus::isDirectoryExists(LPCWSTR directoryNameToCheck)
 {
@@ -56,7 +57,7 @@ Antivirus::PathTo Antivirus::isPathToFile(const char* stringToCheck)
 
 	return NotExist;
 }
-char signatureName[128];
+
 void Antivirus::ToScan(const char* inString)
 {
 	std::vector<std::string> folders;
@@ -67,36 +68,19 @@ void Antivirus::ToScan(const char* inString)
 	{
 	case PathToFile:
 		std::cout << "Checking the file \"" << inString << "\t";
-
-		if (analiz.Scanfile(inString))
-		{
-			std::cout << "File infected!" << std::endl;
-			writeLog(inString, true, signatureName);
-		}
-
-		else
-		{
-			std::cout << "No viruses" << std::endl;
-			writeLog(inString, false, NULL);
-		} //temporary message
-
 		break;
 	case PathToFolder:
-
 
 		subFilesFolders = SeeFilesFolders(inString);
 
 		for (int i = 0; i < subFilesFolders.first.size();++i)
 		{
 			ToScan(getFullNameFolder(subFilesFolders.first.at(i), inString).data());
-		}
-		for (int i = 0; i < subFilesFolders.second.size(); ++i)
-		{
-			ToScan(getFullNameFile(subFilesFolders.second.at(i), inString).data());
 		}		
+			analyzer->Scanfile(inString, subFilesFolders.second);	
 		break;
 	case NotExist:
-		std::cout << std::endl << inString << " : There is no such file or directory.\n";
+		//std::cout << std::endl << inString << " : There is no such file or directory.\n";
 		break;
 	}
 }
@@ -119,36 +103,6 @@ std::string Antivirus::getFullNameFolder(const std::string& fName, const char* i
 {
 	std::string tmp = (std::string)(inString) + fName + "\\";
 	return tmp;
-}
-
-void Antivirus::startLoging(std::ofstream &file)
-{
-	file.open("Log.txt", std::ios::app);
-}
-
-void Antivirus::endLoging(std::ofstream &file)
-{
-	file.close();
-}
-
-char* Antivirus::getCurrentDateAndTime(char *currentDateAndTimeStr)
-{
-	time_t rawtime;
-	tm timeinfo;
-	time(&rawtime);
-	localtime_s(&timeinfo, &rawtime);
-	asctime_s(currentDateAndTimeStr, 26, &timeinfo);
-	return currentDateAndTimeStr;
-}
-
-void Antivirus::writeLog(const char* fileName, bool infected, char* signatureName)
-{
-	startLoging(OutLog);
-	//loging here	
-	char currentDateAndTimeStr[26];
-	OutLog << fileName << (infected ? " : suspected on " : " : safe ") << (signatureName != NULL ? signatureName : "") << " " << getCurrentDateAndTime(currentDateAndTimeStr);
-	//loging here
-	endLoging(OutLog);
 }
 
 void Antivirus::GetFoldersAndFilesList(std::string path,
@@ -186,7 +140,7 @@ void Antivirus::GetFoldersAndFilesList(std::string path,
 
 void Antivirus::outMessageToUser(const std::string& message)
 {
-	std::cout << message;
+	printf(message.data());
 }
 
 bool Antivirus::isThisCommand(const std::string& message, const char* consoleArgument)
@@ -194,73 +148,12 @@ bool Antivirus::isThisCommand(const std::string& message, const char* consoleArg
 	return message == consoleArgument;
 }
 
-//--------------------------------------Signature Analyzer
-
-Antivirus::SignatureAnalyzer::SignatureAnalyzer()
+Antivirus::Antivirus()
 {
-	ScanType = SCAN_FLAGS_FAST_MODE;
-	Librarry_file = "C:\\Antivirus\\SignaturesDB";
+	
 }
 
-Antivirus::SignatureAnalyzer::~SignatureAnalyzer()
+Antivirus::~Antivirus()
 {
 
-}
-
-int Antivirus::SignatureAnalyzer::SetScanType(int ScanType)
-{
-	return (ScanType == NULL) ? NULL : SCAN_FLAGS_FAST_MODE;
-}
-
-/*
-this func compile signatures.yara to db of signatures that we would use
-*/
-char * Antivirus::SignatureAnalyzer::SetLibrarry_file(char * filename)
-{
-	FILE* rule_1;
-
-	fopen_s(&rule_1, "rule1.yara", "r");
-
-	YR_COMPILER* cmplr = NULL;
-
-	YR_RULES* rules = NULL;
-
-	yr_initialize();
-
-	yr_compiler_create(&cmplr);
-
-	printf("%d", yr_compiler_add_file(cmplr, rule_1, NULL, "text"));
-
-	yr_compiler_get_rules(cmplr, &rules);
-
-	yr_rules_save(rules, filename);
-
-	yr_rules_destroy(rules);
-	yr_compiler_destroy(cmplr);
-	yr_finalize();
-	return filename;
-}
-int CALLBACK_MSG_FILE = 0;
-
-int callback_function_forfile(int message, void* message_data, void* user_data)
-{
-	CALLBACK_MSG_FILE = 0;
-	if (message == CALLBACK_MSG_RULE_MATCHING)
-	{
-		CALLBACK_MSG_FILE = 1;
-		strcpy_s(signatureName, (*((YR_RULE*)message_data)).identifier);
-		return CALLBACK_ABORT;
-	}
-	return CALLBACK_CONTINUE;
-}
-
-int Antivirus::SignatureAnalyzer::Scanfile(const char * filename)
-{
-	yr_initialize();
-	YR_RULES* rules = NULL;
-	yr_rules_load(Librarry_file, &rules);
-	yr_rules_scan_file(rules, filename, ScanType, callback_function_forfile, NULL, 0);
-	yr_finalize();
-
-	return CALLBACK_MSG_FILE;
 }
