@@ -18,9 +18,3 @@ Full documentation is here: https://goo.gl/tjkPFe
   2. Include 'antivirus.h' in your code
   3. Create antivirus object
   4. Launch "YourAntivirusObject.ToScan( PATH_TO_FILE )". PATH_TO_FILE - string with path to scan file or folder. Result of scan write in std::stream::cout
-
-###Team (group 232):
-* Kakorin Nikita - team leader / programmer
-* Korolev Evgeny - programmer
-* Zharkov Nikita - tester / programmer
-* Betehtin Artem - analyst / programmer
