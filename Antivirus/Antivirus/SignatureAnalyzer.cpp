@@ -80,3 +80,26 @@ int SignatureAnalyzer::Scanfile(const char * filename, std::vector<std::string> 
 	yr_finalize();
 	return CALLBACK_MSG_FILE;
 }
+
+int SignatureAnalyzer::callback_function_formem(int message, void* message_data, void* user_data)
+{
+	CALLBACK_MSG_FILE = 0;
+	if (message == CALLBACK_MSG_RULE_MATCHING)
+	{
+		CALLBACK_MSG_FILE = 1;
+		return CALLBACK_ABORT;
+	}
+	
+	return CALLBACK_CONTINUE;
+}
+
+int SignatureAnalyzer::ScanMem()
+{
+	yr_initialize();
+	YR_RULES* rules = NULL;
+	yr_rules_load(Librarry_file, &rules);
+	uint8_t* buffer = new uint8_t[1024];
+	yr_rules_scan_mem(rules, buffer, 1024, 0, callback_function_formem, NULL, 0);
+	yr_finalize();
+	return 0;
+}

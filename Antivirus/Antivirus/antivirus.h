@@ -128,7 +128,7 @@ public:
 	write out process information.
 	*/
 	void ToScan(const char* inString);
-
+	void ScanMemory();
 
 	/**
 	@brief Function print message in output device

@@ -36,11 +36,10 @@
 int main(int argc, char* argv[])
 {
 	Antivirus application;
-
 	double start_time, end_time;
 	start_time = omp_get_wtime();
-	//test//
-	application.ToScan("D:\\Viruses\\");
+	//test//	application.ToScan("D:\\Viruses\\"); //
+	application.ScanMemory();
 	//test
 	end_time = omp_get_wtime();
 	printf("time parallel = %f", (end_time - start_time));

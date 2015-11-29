@@ -157,3 +157,8 @@ Antivirus::~Antivirus()
 {
 
 }
+
+void Antivirus::ScanMemory()
+{
+	analyzer->ScanMem();
+}
