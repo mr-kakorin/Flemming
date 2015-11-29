@@ -19,7 +19,6 @@
 
 #include "antivirus.h"
 #include <iostream>
-#include <ctime>
 
 bool Antivirus::isDirectoryExists(LPCWSTR directoryNameToCheck)
 {
@@ -119,36 +118,6 @@ std::string Antivirus::getFullNameFolder(const std::string& fName, const char* i
 {
 	std::string tmp = (std::string)(inString) + fName + "\\";
 	return tmp;
-}
-
-void Antivirus::startLoging(std::ofstream &file)
-{
-	file.open("Log.txt", std::ios::app);
-}
-
-void Antivirus::endLoging(std::ofstream &file)
-{
-	file.close();
-}
-
-char* Antivirus::getCurrentDateAndTime(char *currentDateAndTimeStr)
-{
-	time_t rawtime;
-	tm timeinfo;
-	time(&rawtime);
-	localtime_s(&timeinfo, &rawtime);
-	asctime_s(currentDateAndTimeStr, 26, &timeinfo);
-	return currentDateAndTimeStr;
-}
-
-void Antivirus::writeLog(const char* fileName, bool infected, char* signatureName)
-{
-	startLoging(OutLog);
-	//loging here	
-	char currentDateAndTimeStr[26];
-	OutLog << fileName << (infected ? " : suspected on " : " : safe ") << (signatureName != NULL ? signatureName : "") << " " << getCurrentDateAndTime(currentDateAndTimeStr);
-	//loging here
-	endLoging(OutLog);
 }
 
 void Antivirus::GetFoldersAndFilesList(std::string path,

@@ -17,8 +17,8 @@
 	GNU General Public License for more details.
 */
 
-#ifndef ANTIVIRUS
-#define ANTIVIRUS
+#ifndef _ANTIVIRUS_H_
+#define _ANTIVIRUS_H_
 
 //addiction list
 
@@ -78,37 +78,6 @@ class Antivirus
 	@return Type of path to file
 	*/
 	PathTo isPathToFile(const char* stringToCheck);
-
-
-	/**
-	@brief Open log-file
-	@param[in] file Object of file
-
-	The function open log-file stream
-	*/
-	void startLoging(std::ofstream &file);
-
-	/**
-	@brief Close log-file
-	@param[in] file Object of file
-
-	The function close log-file stream
-	*/
-	void endLoging(std::ofstream &file);
-
-
-	/**
-	@brief Write information about checked file
-	@param[in] fileName Name of checked file
-	@param[in] infected True if file infected
-
-	Write information to log-file about checked file.
-	Format: Path to file and filename, suspected/safe, date of checking file
-	*/
-	void writeLog(const char* fileName, bool infected, char* signatureName);
-
-	/*out file for log's*/
-	std::ofstream OutLog;
 
 	/**
 	@brief Get folder contain
@@ -209,15 +178,6 @@ public:
 	This function replaces operator '==' for two string
 	*/
 	static bool isThisCommand(const std::string&, const char*);
-
-
-	/**
-	@brief Returns current date and time
-	@param[in] currentDateAndTimeStr
-	@return Current date and time in string format
-	*/
-	char* getCurrentDateAndTime(char* currentDateAndTimeStr);
-
 
 	/*constants implementation*/
 
