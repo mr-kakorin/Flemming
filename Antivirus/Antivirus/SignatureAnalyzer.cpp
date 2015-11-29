@@ -47,7 +47,7 @@ int SignatureAnalyzer::Scanfile(const char * filename, std::vector<std::string> 
 	yr_rules_load(Librarry_file, &rules);
 	std::string h;
 
-#pragma omp parallel num_threads(4) firstprivate(CALLBACK_MSG_FILE, signatureName,log, h)
+#pragma omp parallel firstprivate(CALLBACK_MSG_FILE, signatureName,log, h)
 	{
 #pragma omp for ordered
 		for (int i = 0; i < files.size(); ++i)
