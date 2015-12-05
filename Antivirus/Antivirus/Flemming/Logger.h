@@ -20,7 +20,7 @@
 #ifndef _LOGGER_H_
 #define _LOGGER_H_
 
-
+#include <vector>
 #include <ctime>
 #include <fstream>
 #include <string>
@@ -76,6 +76,7 @@ public:
 	*/
 	void writeLog(const char* fileName, bool infected, char* signatureName);
 
+	std::vector<std::string> GetAllSuspectedFiles();
 };
 
 #endif

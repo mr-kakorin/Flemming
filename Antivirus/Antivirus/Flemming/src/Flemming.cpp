@@ -17,32 +17,33 @@
 	GNU General Public License for more details.
 */
 #include <iostream>
-#include "antivirus.h"
+#include "Flemming\Flemming.h"
+#include "Flemming\Logger.h"
 #include <ctime>
 
-SignatureAnalyser* Antivirus::analyser = new SignatureAnalyser;
-Quarantine* Antivirus::quarantiner = new Quarantine(GetConsoleWindow());
+SignatureAnalyser* Flemming::analyser = new SignatureAnalyser;
+Quarantine* Flemming::quarantiner = new Quarantine(GetConsoleWindow());
 
-bool Antivirus::isDirectoryExists(LPCWSTR directoryNameToCheck)
+bool Flemming::isDirectoryExists(LPCWSTR directoryNameToCheck)
 {
 	DWORD dwordFileAttributes = GetFileAttributes(directoryNameToCheck);
 	if (dwordFileAttributes == INVALID_FILE_ATTRIBUTES) return false;
 	return dwordFileAttributes & FILE_ATTRIBUTE_DIRECTORY;
 }
 
-bool Antivirus::isFileExists(LPCWSTR fileNameToCheck)
+bool Flemming::isFileExists(LPCWSTR fileNameToCheck)
 {
 	return GetFileAttributes(fileNameToCheck) != INVALID_FILE_ATTRIBUTES;
 }
 
-LPCWSTR Antivirus::charToLpcwstr(const char* stringToConvert)
+LPCWSTR Flemming::charToLpcwstr(const char* stringToConvert)
 {
 	wchar_t* result = new wchar_t[2048];
 	MultiByteToWideChar(0, 0, stringToConvert, -1, result, 2048);
 	return result;
 }
 
-Antivirus::PathTo Antivirus::isPathToFile(const char* stringToCheck)
+Flemming::PathTo Flemming::isPathToFile(const char* stringToCheck)
 {
 	LPCWSTR path = charToLpcwstr(stringToCheck);
 
@@ -58,13 +59,14 @@ Antivirus::PathTo Antivirus::isPathToFile(const char* stringToCheck)
 
 	return NotExist;
 }
+Logger* logger = new Logger;
 
-void Antivirus::ToScan(const char* inString)
+void Flemming::ToScan(const char* inString)
 {
 	std::vector<std::string> folders;
 	std::vector<std::string> files;
 	std::pair<std::vector<std::string>, std::vector<std::string>> subFilesFolders = std::make_pair(folders, files);
-
+	std::vector<std::string> filesToQuarantine;
 	switch (isPathToFile(inString))
 	{
 	case PathToFile:
@@ -76,9 +78,12 @@ void Antivirus::ToScan(const char* inString)
 		subFilesFolders = SeeFilesFolders(inString);
 		for (int i = 0; i < subFilesFolders.first.size();++i)
 		{
-			ToScanwocheck(getFullNameFolder(subFilesFolders.first.at(i), inString).data());
+			ToScan(getFullNameFolder(subFilesFolders.first.at(i), inString).data());
+			
 		}		
-			analyser->Scanfile(inString, subFilesFolders.second);	
+			analyser->Scanfile(inString, subFilesFolders.second);
+
+
 		break;
 	case NotExist:
 		//std::cout << std::endl << inString << " : There is no such file or directory.\n";
@@ -86,7 +91,7 @@ void Antivirus::ToScan(const char* inString)
 	}
 }
 
-void Antivirus::ToScanwocheck(const char* inString)
+void Flemming::ToScanWoCheck(const char* inString)
 {
 	std::vector<std::string> folders;
 	std::vector<std::string> files;
@@ -96,13 +101,13 @@ void Antivirus::ToScanwocheck(const char* inString)
 
 		for (int i = 0; i < subFilesFolders.first.size();++i)
 		{
-			ToScanwocheck(getFullNameFolder(subFilesFolders.first.at(i), inString).data());
+			ToScanWoCheck(getFullNameFolder(subFilesFolders.first.at(i), inString).data());
 		}
 		analyser->Scanfile(inString, subFilesFolders.second);
 	
 }
 
-std::pair<std::vector<std::string>, std::vector<std::string>> Antivirus::SeeFilesFolders(const char* inString)
+std::pair<std::vector<std::string>, std::vector<std::string>> Flemming::SeeFilesFolders(const char* inString)
 {
 	std::vector<std::string> folders;
 	std::vector<std::string> files;
@@ -110,19 +115,19 @@ std::pair<std::vector<std::string>, std::vector<std::string>> Antivirus::SeeFile
 	return std::make_pair(folders, files);
 }
 
-std::string Antivirus::getFullNameFile(const std::string& fName, const char* inString)const
+std::string Flemming::getFullNameFile(const std::string& fName, const char* inString)
 {
 	std::string tmp = (std::string)(inString) + fName;
 	return tmp;
 }
 
-std::string Antivirus::getFullNameFolder(const std::string& fName, const char* inString)const
+std::string Flemming::getFullNameFolder(const std::string& fName, const char* inString)
 {
 	std::string tmp = (std::string)(inString) + fName + "\\";
 	return tmp;
 }
 
-void Antivirus::GetFoldersAndFilesList(std::string path,
+void Flemming::GetFoldersAndFilesList(std::string path,
 	std::vector<std::string> &folders,
 	std::vector<std::string> &files)
 {
@@ -155,32 +160,32 @@ void Antivirus::GetFoldersAndFilesList(std::string path,
 	}
 }
 
-void Antivirus::outMessageToUser(const std::string& message)
+void Flemming::outMessageToUser(const std::string& message)
 {
 	printf(message.data());
 }
 
-bool Antivirus::isThisCommand(const std::string& message, const char* consoleArgument)
+bool Flemming::isThisCommand(const std::string& message, const char* consoleArgument)
 {
 	return message == consoleArgument;
 }
 
-Antivirus::Antivirus()
+Flemming::Flemming()
 {
 	
 }
 
-Antivirus::~Antivirus()
+Flemming::~Flemming()
 {
 
 }
 
-void Antivirus::ScanMemory()
+void Flemming::ScanMemory()
 {
 	analyser->ScanMem();
 }
 
-std::string Antivirus::getSystemDirectory() {
+std::string Flemming::getSystemDirectory() {
 	const UINT size = 300; // consistent value
 	TCHAR infoBuf[size];
 	std::string ret;
@@ -200,7 +205,7 @@ std::string Antivirus::getSystemDirectory() {
 	return (ret + "\\");
 }
 
-void Antivirus::ScanSystemFolder()
+void Flemming::ScanSystemFolder()
 {
 	try {
 		ToScan(getSystemDirectory().data());
@@ -211,31 +216,34 @@ void Antivirus::ScanSystemFolder()
 	}
 }
 
-void Antivirus::ToScanWithQ(const char* inString)
+void Flemming::ToScanWithQ(const char* inString)
+{
+	ToScan(inString);
+
+	std::vector<std::string> filesToQuarantine = logger->GetAllSuspectedFiles();
+	if (!filesToQuarantine.empty())
+	{
+		for (int i = 0;i < filesToQuarantine.size();++i)
+		{
+			quarantiner->putToQuarantine(filesToQuarantine.at(i));
+			//std::cout << filesToQuarantine.at(i) << std::endl;
+		}
+		quarantiner->CrypterQuarantineFiles(SeeFilesFolders, getFullNameFile);
+	}
+}
+
+void Flemming::ToScanWoCheckWithQ(const char* inString)
 {
 	std::vector<std::string> folders;
 	std::vector<std::string> files;
 	std::pair<std::vector<std::string>, std::vector<std::string>> subFilesFolders = std::make_pair(folders, files);
 
-	switch (isPathToFile(inString))
+	subFilesFolders = SeeFilesFolders(inString);
+
+	for (int i = 0; i < subFilesFolders.first.size();++i)
 	{
-	case PathToFile:
-		//std::cout << "Checking the file \"" << inString << "\t";
-		analyser->ScanSingleFile(inString);
-		break;
-	case PathToFolder:
-
-		subFilesFolders = SeeFilesFolders(inString);
-
-		for (int i = 0; i < subFilesFolders.first.size();++i)
-		{
-			ToScan(getFullNameFolder(subFilesFolders.first.at(i), inString).data());
-		}
-		analyser->Scanfile(inString, subFilesFolders.second);
-		
-		break;
-	case NotExist:
-		//std::cout << std::endl << inString << " : There is no such file or directory.\n";
-		break;
+		ToScanWoCheckWithQ(getFullNameFolder(subFilesFolders.first.at(i), inString).data());
 	}
+	analyser->Scanfile(inString, subFilesFolders.second);
+
 }

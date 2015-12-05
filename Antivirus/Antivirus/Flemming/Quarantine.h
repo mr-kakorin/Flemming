@@ -16,30 +16,31 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
 */
-#include <iostream>
-#include <stdio.h>
+
+#ifndef _QUARANTINE_H_
+#define _QUARANTINE_H_
+
+#include <string>
 #include <windows.h>
-#include <stdlib.h>
-#include <shellapi.h>
-#include "quarantine.h"
+#include "Flemming\Crypter.h"
 
+class Quarantine {
 
-Quarantine::Quarantine(HWND _handle): numberOfThreats(0), handle(_handle) {};
+	long numberOfThreats;
+	const std::string pathToQuarantine = "C:\\Antivirus\\Quarantine\\";
+	HWND handle;
+	static Crypter* crypter;
+	unsigned int HashRot13(const char*);
+public:
+	Quarantine(HWND);
 
-void Quarantine::putToQuarantine(std::string pathToFile) {	
+	void putToQuarantine(std::string pathToFile);
+
+	bool CrypterQuarantineFiles(std::pair<std::vector<std::string>, std::vector<std::string>>
+		(const char*),
+		std::string(const std::string&, const char*)
 		
-	std::wstring stemp = std::wstring(pathToFile.begin(), pathToFile.end());
-	LPCWSTR From = stemp.c_str();
-	std::wstring stemp1 = std::wstring(pathToQuarantine.begin(), pathToQuarantine.end());
-	LPCWSTR To = stemp1.c_str();
-
-	SHFILEOPSTRUCT op;
-	ZeroMemory(&op, sizeof(op));
-	op.hwnd = handle;
-	op.wFunc = FO_MOVE;
-	op.pFrom = From;
-	op.pTo = To;
-	op.fFlags = 0;
-	SHFileOperation(&op);
-	
+		);
 };
+
+#endif

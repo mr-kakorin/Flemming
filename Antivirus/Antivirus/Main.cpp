@@ -17,13 +17,13 @@
 	GNU General Public License for more details.
 */
 #include <iostream>
-#include "antivirus.h"
 #include <stdio.h>
 #include <omp.h>
+#include "Flemming\Flemming.h"
 /*
 	@brief Processing of entered command
 
-	If type one argument: Error. The antivirus must launch with one or more parametres
+	If type one argument: Error. The Flemming must launch with one or more parametres
 	Two arguments:
 		It can be command: '-checksys', '-help', '-info'
 		Else it error command
@@ -35,15 +35,14 @@
 
 int main(int argc, char* argv[])
 {
-	Antivirus application;
+	Flemming application;
 	double start_time, end_time;
 	start_time = omp_get_wtime();
 	//test//	
 	//
-	//		application.ToScan("D:\\viruses\\");
-	
+	//				application.ToScanWithQ("D:\\viruses\\");	
 	//
-	//application.ScanMemory();
+	//	application.ScanMemory();
 	//test
 
 	end_time = omp_get_wtime();
@@ -51,47 +50,47 @@ int main(int argc, char* argv[])
 
 	switch (argc) {
 	case 1:
-		Antivirus::outMessageToUser(application.wrongArgumentsNumberErrorString);
+		Flemming::outMessageToUser(application.wrongArgumentsNumberErrorString);
 		break;
 	case 2:
-		if (Antivirus::isThisCommand(application.helpArgumentString, argv[1]))
+		if (Flemming::isThisCommand(application.helpArgumentString, argv[1]))
 		{
-			Antivirus::outMessageToUser(application.helpOutputText);
+			Flemming::outMessageToUser(application.helpOutputText);
 		}
 		else {
-			if (Antivirus::isThisCommand(application.infoArgumentString, argv[1]))
+			if (Flemming::isThisCommand(application.infoArgumentString, argv[1]))
 			{
-				Antivirus::outMessageToUser(application.infoOutputText);
+				Flemming::outMessageToUser(application.infoOutputText);
 			}
 			else {
-				if (Antivirus::isThisCommand(application.checkArgumentString, argv[1]))
+				if (Flemming::isThisCommand(application.checkArgumentString, argv[1]))
 				{
-					Antivirus::outMessageToUser(application.checkNoPathErrorText);
+					Flemming::outMessageToUser(application.checkNoPathErrorText);
 				}
 				else {
-					if (Antivirus::isThisCommand(application.checkSystemFoulderArgumentString, argv[1]))
+					if (Flemming::isThisCommand(application.checkSystemFoulderArgumentString, argv[1]))
 					{
 						//check system foulder
 					}
 					else {
-						Antivirus::outMessageToUser(application.wrongArgumentsErrorString);
+						Flemming::outMessageToUser(application.wrongArgumentsErrorString);
 					}
 				}
 			}
 		}
 		break;
 	case 3:
-		if (Antivirus::isThisCommand(application.checkArgumentString, argv[1]))
+		if (Flemming::isThisCommand(application.checkArgumentString, argv[1]))
 		{
 			application.ToScan(argv[2]);
 		}
 		else
 		{
-			Antivirus::outMessageToUser(application.wrongArgumentsErrorString);
+			Flemming::outMessageToUser(application.wrongArgumentsErrorString);
 		}
 		break;
 	default:
-		Antivirus::outMessageToUser(application.wrongArgumentsNumberErrorString);
+		Flemming::outMessageToUser(application.wrongArgumentsNumberErrorString);
 		break;
 	}
 	return 0;

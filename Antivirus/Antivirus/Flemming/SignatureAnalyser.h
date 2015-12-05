@@ -20,8 +20,8 @@
 #include <ctime>
 #include <vector>
 #include <string>
-#include "logger.h"
-#include "extensionAnalyser.h"
+#include "Flemming\Logger.h"
+#include "Flemming\ExtensionAnalyser.h"
 #include "yara.h"
 
 /**
@@ -41,6 +41,10 @@ public:
 	int Scanfile(const char *, std::vector<std::string>);
 	int ScanSingleFile(const char*);
 	int ScanMem();
+	Logger* getLogger()
+	{
+		return log;
+	}
 private:	
 
 	static char signatureName[128]; ///> Name of signature in string format

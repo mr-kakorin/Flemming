@@ -10,6 +10,23 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Flemming\src\Crypter.cpp" />
+    <ClCompile Include="Flemming\src\ExtensionAnalyser.cpp" />
+    <ClCompile Include="Flemming\src\Flemming.cpp" />
+    <ClCompile Include="Flemming\src\Logger.cpp" />
+    <ClCompile Include="Flemming\src\Quarantine.cpp" />
+    <ClCompile Include="Flemming\src\SignatureAnalyser.cpp" />
+    <ClCompile Include="Main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Flemming\Crypter.h" />
+    <ClInclude Include="Flemming\ExtensionAnalyser.h" />
+    <ClInclude Include="Flemming\Flemming.h" />
+    <ClInclude Include="Flemming\Logger.h" />
+    <ClInclude Include="Flemming\Quarantine.h" />
+    <ClInclude Include="Flemming\SignatureAnalyser.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{5BDA52E2-8B61-400D-9743-CD4556C0D6D1}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -86,21 +103,6 @@
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="antivirus.cpp" />
-    <ClCompile Include="extensionAnalyser.cpp" />
-    <ClCompile Include="logger.cpp" />
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="quarantine.cpp" />
-    <ClCompile Include="SignatureAnalyzer.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="antivirus.h" />
-    <ClInclude Include="extensionAnalyser.h" />
-    <ClInclude Include="logger.h" />
-    <ClInclude Include="quarantine.h" />
-    <ClInclude Include="SignatureAnalyser.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

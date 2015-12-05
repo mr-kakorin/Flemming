@@ -18,7 +18,7 @@
 */
 
 #include <iostream>
-#include <SignatureAnalyser.h>
+#include "Flemming\SignatureAnalyser.h"
 
 const char* SignatureAnalyser::getFullNameFile(const std::string& fName, const char* inString)const
 {
@@ -47,10 +47,10 @@ char SignatureAnalyser::signatureName[128] = {};
 int SignatureAnalyser::CALLBACK_MSG_FILE = 0;
 
 int SignatureAnalyser::callback_function_forfile(int message, void* message_data, void* user_data)
-	{
+	{		
 		CALLBACK_MSG_FILE = 0;
 		strcpy_s(signatureName, "");
-		if (!message_data) return CALLBACK_MSG_SCAN_FINISHED;
+		if (!message_data) return CALLBACK_MSG_SCAN_FINISHED;		
 		if (message == CALLBACK_MSG_RULE_MATCHING)
 		{
 			CALLBACK_MSG_FILE = 1;			
@@ -70,12 +70,13 @@ int SignatureAnalyser::Scanfile(const char * pathToFile, std::vector<std::string
 	int count = files.size();
 		for (int i = 0; i < count; ++i)
 		{			
-			if (extAnalyser->checkExtension(files.at(i).data()))
-			{
+			//if (extAnalyser->checkExtension(files.at(i).data()))
+			//{
 				str = getFullNameFile(files.at(i), pathToFile);
 				yr_rules_scan_file(rules, str, ScanType, callback_function_forfile, NULL, 0);
 				log->writeLog(str, (CALLBACK_MSG_FILE ? true : false), signatureName);
-			}
+				
+			//}
 		}	
 	yr_finalize();
 	return CALLBACK_MSG_FILE;

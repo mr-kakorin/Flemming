@@ -17,8 +17,8 @@
 	GNU General Public License for more details.
 */
 
-#ifndef _ANTIVIRUS_H_
-#define _ANTIVIRUS_H_
+#ifndef _Flemming_H_
+#define _Flemming_H_
 
 //addiction list
 
@@ -27,14 +27,14 @@
 #include <vector>
 #include <string>
 #include <iomanip>
-#include "SignatureAnalyser.h"
-#include "quarantine.h"
+#include "Flemming\SignatureAnalyser.h"
+#include "Flemming\Quarantine.h"
 /**
-@brief API antivirus
+@brief API Flemming
 
-Class for working with the methods of antivirus
+Class for working with the methods of Flemming
 */
-class Antivirus
+class Flemming
 {
 	/**
 	@brief Checking existence of a directory
@@ -88,14 +88,14 @@ class Antivirus
 
 	Scan the path and return list of folders and files in the directory
 	*/
-	void GetFoldersAndFilesList(std::string path,
+	static void GetFoldersAndFilesList(std::string path,
 		std::vector<std::string> &folders,
 		std::vector<std::string> &files);
 
 
 
 	/// Wrap under get Folders and Files list
-	std::pair<std::vector<std::string>, std::vector<std::string>> SeeFilesFolders(const char*);
+	static std::pair<std::vector<std::string>, std::vector<std::string>> SeeFilesFolders(const char*);
 
 	/**
 	@brief Get fullname of file
@@ -103,7 +103,7 @@ class Antivirus
 	@param[in] inString Path to file
 	@return Full name of file with full path
 	*/
-	std::string getFullNameFile(const std::string&, const char*)const;
+	static std::string getFullNameFile(const std::string&, const char*);
 
 	/**
 	@brief Get fullname of folder
@@ -111,17 +111,18 @@ class Antivirus
 	@param[in] inString Path to the folder
 	@return Full name of folder with full path
 	*/
-	std::string getFullNameFolder(const std::string&, const char*)const;
+	std::string getFullNameFolder(const std::string&, const char*);
 	
 	static SignatureAnalyser* analyser;
 
 	static Quarantine* quarantiner;
 
 	std::string getSystemDirectory();
-	void ToScanwocheck(const char*);
+	void ToScanWoCheck(const char*);
+	void ToScanWoCheckWithQ(const char*);
 public:
-	Antivirus();
-	~Antivirus();
+	Flemming();
+	~Flemming();
 
 	
 	/**
@@ -178,7 +179,7 @@ public:
 		infoArgumentString + " - about program\n";
 
 	/// Information about programm
-	const std::string infoOutputText = "\nAntivirus ver 0.0.1 Copyright(C) 2015\n"
+	const std::string infoOutputText = "\nFlemming ver 0.0.1 Copyright(C) 2015\n"
 		"This is free software, and you are welcome to redistribute\n"
 		"it under certain conditions.\n"
 		"Program comes with ABSOLUTELY NO WARRANTY.\n"

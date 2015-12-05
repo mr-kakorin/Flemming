@@ -17,14 +17,14 @@
 	GNU General Public License for more details.
 */
 
-#include "logger.h"
-
-Logger::Logger(const std::string inputLogFileName) : logFileName(inputLogFileName) {}
-
+#include <iostream>
 #include <fstream>
 #include <ctime>
-#include "logger.h"
+#include "Flemming\Logger.h"
 
+
+
+Logger::Logger(const std::string inputLogFileName) : logFileName(inputLogFileName) {}
 char* Logger::getCurrentDateAndTime(char *currentDateAndTimeStr)
 {
 	time_t rawtime;
@@ -50,7 +50,33 @@ void Logger::writeLog(const char* fileName, bool infected, char* signatureName)
 	startLoging();
 	//loging here	
 	char currentDateAndTimeStr[26];
-	outLog << fileName << (infected ? " : suspected on " : " : safe ") << signatureName << ":" << getCurrentDateAndTime(currentDateAndTimeStr);
+	outLog << fileName << (infected ? " SUSPECTED_ON " : " SAFE") << signatureName << " " << getCurrentDateAndTime(currentDateAndTimeStr);
 	//loging here
 	endLoging();
+}
+
+std::vector<std::string> Logger::GetAllSuspectedFiles()
+{
+	std::vector<std::string> allSuspectedFiles;
+	std::string str;	
+	char mode[32] = {};
+	std::ifstream inLog(logFileName);
+	char s;
+	while (inLog.peek()!=EOF)
+	{
+	   inLog >> str;
+		
+	   inLog >> mode;
+	
+	   if (mode[1] == 'U') 
+	   {
+		 
+		   allSuspectedFiles.push_back(str);
+	   }
+		
+		while ((s=inLog.get()) != '\n')	{}
+	}
+	inLog.close();
+
+	return allSuspectedFiles;
 }
