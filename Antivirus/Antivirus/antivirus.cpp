@@ -20,7 +20,7 @@
 #include "antivirus.h"
 #include <ctime>
 
-SignatureAnalyzer* Antivirus::analyzer = new SignatureAnalyzer;
+SignatureAnalyser* Antivirus::analyser = new SignatureAnalyser;
 Quarantine* Antivirus::quarantiner = new Quarantine(GetConsoleWindow());
 
 bool Antivirus::isDirectoryExists(LPCWSTR directoryNameToCheck)
@@ -69,7 +69,7 @@ void Antivirus::ToScan(const char* inString)
 	{
 	case PathToFile:
 		//std::cout << "Checking the file \"" << inString << "\t";
-		analyzer->ScanSingleFile(inString);
+		analyser->ScanSingleFile(inString);
 		break;
 	case PathToFolder:
 
@@ -78,7 +78,7 @@ void Antivirus::ToScan(const char* inString)
 		{
 			ToScanwocheck(getFullNameFolder(subFilesFolders.first.at(i), inString).data());
 		}		
-			analyzer->Scanfile(inString, subFilesFolders.second);	
+			analyser->Scanfile(inString, subFilesFolders.second);	
 		break;
 	case NotExist:
 		//std::cout << std::endl << inString << " : There is no such file or directory.\n";
@@ -98,7 +98,7 @@ void Antivirus::ToScanwocheck(const char* inString)
 		{
 			ToScanwocheck(getFullNameFolder(subFilesFolders.first.at(i), inString).data());
 		}
-		analyzer->Scanfile(inString, subFilesFolders.second);
+		analyser->Scanfile(inString, subFilesFolders.second);
 	
 }
 
@@ -177,7 +177,7 @@ Antivirus::~Antivirus()
 
 void Antivirus::ScanMemory()
 {
-	analyzer->ScanMem();
+	analyser->ScanMem();
 }
 
 std::string Antivirus::getSystemDirectory() {
@@ -221,7 +221,7 @@ void Antivirus::ToScanWithQ(const char* inString)
 	{
 	case PathToFile:
 		//std::cout << "Checking the file \"" << inString << "\t";
-		analyzer->ScanSingleFile(inString);
+		analyser->ScanSingleFile(inString);
 		break;
 	case PathToFolder:
 
@@ -231,7 +231,7 @@ void Antivirus::ToScanWithQ(const char* inString)
 		{
 			ToScan(getFullNameFolder(subFilesFolders.first.at(i), inString).data());
 		}
-		analyzer->Scanfile(inString, subFilesFolders.second);
+		analyser->Scanfile(inString, subFilesFolders.second);
 		
 		break;
 	case NotExist:

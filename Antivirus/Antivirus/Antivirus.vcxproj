@@ -99,7 +99,7 @@
     <ClInclude Include="extensionAnalyser.h" />
     <ClInclude Include="logger.h" />
     <ClInclude Include="quarantine.h" />
-    <ClInclude Include="SignatureAnalyzer.h" />
+    <ClInclude Include="SignatureAnalyser.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

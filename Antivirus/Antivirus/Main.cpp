@@ -40,8 +40,7 @@ int main(int argc, char* argv[])
 	start_time = omp_get_wtime();
 	//test//	
 	//
-	//	
-	application.ToScan("D:\\viruses\\");
+	//		application.ToScan("D:\\viruses\\");
 	
 	//
 	//application.ScanMemory();

@@ -29,11 +29,11 @@
 
 This class make custom wrap under Yara library
 */
-class SignatureAnalyzer
+class SignatureAnalyser
 {
 public:	
-	SignatureAnalyzer();
-	~SignatureAnalyzer();
+	SignatureAnalyser();
+	~SignatureAnalyser();
 	/**
 	@brief Start scan file
 	@return  Type of result of scan file

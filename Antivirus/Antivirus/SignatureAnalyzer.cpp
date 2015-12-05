@@ -18,9 +18,9 @@
 */
 
 #include <iostream>
-#include <SignatureAnalyzer.h>
+#include <SignatureAnalyser.h>
 
-const char* SignatureAnalyzer::getFullNameFile(const std::string& fName, const char* inString)const
+const char* SignatureAnalyser::getFullNameFile(const std::string& fName, const char* inString)const
 {
 	char buf[128];
 	strcpy(buf, inString);
@@ -28,25 +28,25 @@ const char* SignatureAnalyzer::getFullNameFile(const std::string& fName, const c
 	return buf;
 }
 
-Logger* SignatureAnalyzer::log = new Logger;
-ExtensionAnalyser* SignatureAnalyzer::extAnalyser = new ExtensionAnalyser;
+Logger* SignatureAnalyser::log = new Logger;
+ExtensionAnalyser* SignatureAnalyser::extAnalyser = new ExtensionAnalyser;
 
-SignatureAnalyzer::SignatureAnalyzer()
+SignatureAnalyser::SignatureAnalyser()
 {	
 	ScanType = SCAN_FLAGS_FAST_MODE;
 	Librarry_file = "C:\\Antivirus\\SignaturesDB";	
 }
 
-SignatureAnalyzer::~SignatureAnalyzer()
+SignatureAnalyser::~SignatureAnalyser()
 {
 
 }
 
 
-char SignatureAnalyzer::signatureName[128] = {};
-int SignatureAnalyzer::CALLBACK_MSG_FILE = 0;
+char SignatureAnalyser::signatureName[128] = {};
+int SignatureAnalyser::CALLBACK_MSG_FILE = 0;
 
-int SignatureAnalyzer::callback_function_forfile(int message, void* message_data, void* user_data)
+int SignatureAnalyser::callback_function_forfile(int message, void* message_data, void* user_data)
 	{
 		CALLBACK_MSG_FILE = 0;
 		strcpy_s(signatureName, "");
@@ -60,7 +60,7 @@ int SignatureAnalyzer::callback_function_forfile(int message, void* message_data
 		return CALLBACK_CONTINUE;
 }
 
-int SignatureAnalyzer::Scanfile(const char * pathToFile, std::vector<std::string> files)
+int SignatureAnalyser::Scanfile(const char * pathToFile, std::vector<std::string> files)
 {
 	yr_initialize();
 	YR_RULES* rules = NULL;
@@ -81,7 +81,7 @@ int SignatureAnalyzer::Scanfile(const char * pathToFile, std::vector<std::string
 	return CALLBACK_MSG_FILE;
 }
 
-int SignatureAnalyzer::callback_function_formem(int message, void* message_data, void* user_data)
+int SignatureAnalyser::callback_function_formem(int message, void* message_data, void* user_data)
 {
 	if (!message_data) return CALLBACK_MSG_SCAN_FINISHED;
 	CALLBACK_MSG_FILE = 0;	
@@ -95,7 +95,7 @@ int SignatureAnalyzer::callback_function_formem(int message, void* message_data,
 	return CALLBACK_CONTINUE;
 }
 
-int SignatureAnalyzer::ScanMem()
+int SignatureAnalyser::ScanMem()
 {
 	yr_initialize();
 	YR_RULES* rules = NULL;
@@ -106,7 +106,7 @@ int SignatureAnalyzer::ScanMem()
 	return 0;
 }
 
-int SignatureAnalyzer::ScanSingleFile(const char * pathToFile)
+int SignatureAnalyser::ScanSingleFile(const char * pathToFile)
 {
 	yr_initialize();
 	YR_RULES* rules = NULL;

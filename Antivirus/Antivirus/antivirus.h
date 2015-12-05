@@ -27,7 +27,7 @@
 #include <vector>
 #include <string>
 #include <iomanip>
-#include "SignatureAnalyzer.h"
+#include "SignatureAnalyser.h"
 #include "quarantine.h"
 /**
 @brief API antivirus
@@ -113,7 +113,7 @@ class Antivirus
 	*/
 	std::string getFullNameFolder(const std::string&, const char*)const;
 	
-	static SignatureAnalyzer* analyzer;
+	static SignatureAnalyser* analyser;
 
 	static Quarantine* quarantiner;
 
