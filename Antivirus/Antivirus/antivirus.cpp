@@ -21,6 +21,7 @@
 #include <ctime>
 
 SignatureAnalyzer* Antivirus::analyzer = new SignatureAnalyzer;
+Quarantine* Antivirus::quarantiner = new Quarantine(GetConsoleWindow());
 
 bool Antivirus::isDirectoryExists(LPCWSTR directoryNameToCheck)
 {
@@ -67,15 +68,15 @@ void Antivirus::ToScan(const char* inString)
 	switch (isPathToFile(inString))
 	{
 	case PathToFile:
-		std::cout << "Checking the file \"" << inString << "\t";
+		//std::cout << "Checking the file \"" << inString << "\t";
+		analyzer->ScanSingleFile(inString);
 		break;
 	case PathToFolder:
 
 		subFilesFolders = SeeFilesFolders(inString);
-
 		for (int i = 0; i < subFilesFolders.first.size();++i)
 		{
-			ToScan(getFullNameFolder(subFilesFolders.first.at(i), inString).data());
+			ToScanwocheck(getFullNameFolder(subFilesFolders.first.at(i), inString).data());
 		}		
 			analyzer->Scanfile(inString, subFilesFolders.second);	
 		break;
@@ -83,6 +84,22 @@ void Antivirus::ToScan(const char* inString)
 		//std::cout << std::endl << inString << " : There is no such file or directory.\n";
 		break;
 	}
+}
+
+void Antivirus::ToScanwocheck(const char* inString)
+{
+	std::vector<std::string> folders;
+	std::vector<std::string> files;
+	std::pair<std::vector<std::string>, std::vector<std::string>> subFilesFolders = std::make_pair(folders, files);
+
+    subFilesFolders = SeeFilesFolders(inString);
+
+		for (int i = 0; i < subFilesFolders.first.size();++i)
+		{
+			ToScanwocheck(getFullNameFolder(subFilesFolders.first.at(i), inString).data());
+		}
+		analyzer->Scanfile(inString, subFilesFolders.second);
+	
 }
 
 std::pair<std::vector<std::string>, std::vector<std::string>> Antivirus::SeeFilesFolders(const char* inString)
@@ -161,4 +178,64 @@ Antivirus::~Antivirus()
 void Antivirus::ScanMemory()
 {
 	analyzer->ScanMem();
+}
+
+std::string Antivirus::getSystemDirectory() {
+	const UINT size = 300; // consistent value
+	TCHAR infoBuf[size];
+	std::string ret;
+	if (!GetWindowsDirectory(infoBuf, size)) {
+		throw ERROR("failed to get windows directory");
+	}
+	else {
+		for (int i = 0;i < size; ++i) {
+			if (!infoBuf[i]) {
+				break;
+			}
+			else {
+				ret += char(infoBuf[i]);
+			}
+		}
+	}
+	return (ret + "\\");
+}
+
+void Antivirus::ScanSystemFolder()
+{
+	try {
+		ToScan(getSystemDirectory().data());
+	}
+	catch (const char* e)
+	{
+		std::cout << e;
+	}
+}
+
+void Antivirus::ToScanWithQ(const char* inString)
+{
+	std::vector<std::string> folders;
+	std::vector<std::string> files;
+	std::pair<std::vector<std::string>, std::vector<std::string>> subFilesFolders = std::make_pair(folders, files);
+
+	switch (isPathToFile(inString))
+	{
+	case PathToFile:
+		//std::cout << "Checking the file \"" << inString << "\t";
+		analyzer->ScanSingleFile(inString);
+		break;
+	case PathToFolder:
+
+		subFilesFolders = SeeFilesFolders(inString);
+
+		for (int i = 0; i < subFilesFolders.first.size();++i)
+		{
+			ToScan(getFullNameFolder(subFilesFolders.first.at(i), inString).data());
+		}
+		analyzer->Scanfile(inString, subFilesFolders.second);
+		
+		break;
+	case NotExist:
+		//std::cout << std::endl << inString << " : There is no such file or directory.\n";
+		break;
+	}
 }

@@ -16,7 +16,7 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
 */
-
+#include <iostream>
 #include "antivirus.h"
 #include <stdio.h>
 #include <omp.h>
@@ -38,11 +38,17 @@ int main(int argc, char* argv[])
 	Antivirus application;
 	double start_time, end_time;
 	start_time = omp_get_wtime();
-	//test//	application.ToScan("D:\\Viruses\\"); //
-	application.ScanMemory();
+	//test//	
+	//
+	//
+	
+	application.ToScan("D:\\Games\\Hearthstone\\");
+	
+	//
+	//application.ScanMemory();
 	//test
 	end_time = omp_get_wtime();
-	printf("time parallel = %f", (end_time - start_time));
+	printf("time = %f", (end_time - start_time));
 
 	switch (argc) {
 	case 1:

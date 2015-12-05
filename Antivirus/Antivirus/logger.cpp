@@ -50,7 +50,7 @@ void Logger::writeLog(const char* fileName, bool infected, char* signatureName)
 	startLoging();
 	//loging here	
 	char currentDateAndTimeStr[26];
-	outLog << fileName << (infected ? " : suspected on " : " : safe ") << (signatureName != NULL ? signatureName : "") << " " << getCurrentDateAndTime(currentDateAndTimeStr);
+	outLog << fileName << (infected ? " : suspected on " : " : safe ") << signatureName << ":" << getCurrentDateAndTime(currentDateAndTimeStr);
 	//loging here
 	endLoging();
 }

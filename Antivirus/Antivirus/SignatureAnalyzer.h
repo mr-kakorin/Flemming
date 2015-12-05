@@ -37,25 +37,26 @@ public:
 	@brief Start scan file
 	@return  Type of result of scan file
 	*/
-	int Scanfile(const char *, std::vector<std::string> files);
-
+	int Scanfile(const char *, std::vector<std::string>);
+	int ScanSingleFile(const char*);
 	int ScanMem();
 private:	
 
 	static char signatureName[128]; ///> Name of signature in string format
+	//static std::string signatureName;
 	static int CALLBACK_MSG_FILE; ///> Data of callback message
 
 	static Logger* log; ///> LogFile object
 	/*
 		@brief Returns full name with full path to file
 	*/
-	std::string getFullNameFile(const std::string&, const char*)const;
+	const char* getFullNameFile(const std::string&, const char*)const;
 	int ScanType; ///> Type of scanning
 	char *Librarry_file; ///> Atavism
 	/**
 	@brief Function for set type of scan
 	*/
-	int SetScanType(int);
+	
 	/**
 	@brief Call back function
 

@@ -28,7 +28,7 @@
 #include <string>
 #include <iomanip>
 #include "SignatureAnalyzer.h"
-
+#include "quarantine.h"
 /**
 @brief API antivirus
 
@@ -115,11 +115,15 @@ class Antivirus
 	
 	static SignatureAnalyzer* analyzer;
 
+	static Quarantine* quarantiner;
 
+	std::string getSystemDirectory();
+	void ToScanwocheck(const char*);
 public:
 	Antivirus();
 	~Antivirus();
 
+	
 	/**
 	@brief  Start scan the specified directory
 	@param[in] inString Path to directory for scan
@@ -128,6 +132,8 @@ public:
 	write out process information.
 	*/
 	void ToScan(const char* inString);
+	void ToScanWithQ(const char* inString);
+	void ScanSystemFolder();
 	void ScanMemory();
 
 	/**

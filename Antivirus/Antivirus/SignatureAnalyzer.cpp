@@ -21,11 +21,15 @@
 #include <SignatureAnalyzer.h>
 #include <omp.h>
 
-std::string SignatureAnalyzer::getFullNameFile(const std::string& fName, const char* inString)const
+
+const char* SignatureAnalyzer::getFullNameFile(const std::string& fName, const char* inString)const
 {
-	std::string tmp = (std::string)(inString) + fName;
-	return tmp;
+	char buf[128];
+	strcpy(buf, inString);
+	strcat(buf, fName.data());
+	return buf;
 }
+
 Logger* SignatureAnalyzer::log = new Logger;
 
 SignatureAnalyzer::SignatureAnalyzer()
@@ -39,26 +43,25 @@ SignatureAnalyzer::~SignatureAnalyzer()
 
 }
 
-int SignatureAnalyzer::SetScanType(int ScanType)
-{
-	return (ScanType == NULL) ? NULL : SCAN_FLAGS_FAST_MODE;
-}
 
 char SignatureAnalyzer::signatureName[128] = {};
 int SignatureAnalyzer::CALLBACK_MSG_FILE = 0;
 
 int SignatureAnalyzer::callback_function_forfile(int message, void* message_data, void* user_data)
-{
-	CALLBACK_MSG_FILE = 0;
-	if (message == CALLBACK_MSG_RULE_MATCHING)
 	{
-		CALLBACK_MSG_FILE = 1;
-		strcpy_s(signatureName, (*((YR_RULE*)message_data)).identifier);
-		return CALLBACK_ABORT;
-	}		
-	return CALLBACK_CONTINUE;
+		CALLBACK_MSG_FILE = 0;
+		strcpy_s(signatureName, "");
+		if (!message_data) return CALLBACK_MSG_SCAN_FINISHED;
+		if (message == CALLBACK_MSG_RULE_MATCHING)
+		{
+			CALLBACK_MSG_FILE = 1;			
+			strcpy_s(signatureName, (*((YR_RULE*)message_data)).identifier);
+			return CALLBACK_ABORT;
+		}
+		return CALLBACK_CONTINUE;
 }
 
+/*
 int SignatureAnalyzer::Scanfile(const char * filename, std::vector<std::string> files)
 {
 	yr_initialize();
@@ -66,27 +69,51 @@ int SignatureAnalyzer::Scanfile(const char * filename, std::vector<std::string> 
 	yr_rules_load(Librarry_file, &rules);
 	std::string h;
 
-#pragma omp parallel firstprivate(CALLBACK_MSG_FILE, signatureName,log, h)
+#pragma omp parallel firstprivate(signatureName, CALLBACK_MSG_FILE, log, h)
 	{
+		
 #pragma omp for ordered
 		for (int i = 0; i < files.size(); ++i)
 		{
 			h = getFullNameFile(files.at(i), filename);
 			yr_rules_scan_file(rules, h.data(), ScanType, callback_function_forfile, NULL, 0);
 #pragma omp ordered
-			log->writeLog(h.data(), (CALLBACK_MSG_FILE ==1 ? true : false), signatureName);
+			//log->writeLog(h.data(), (CALLBACK_MSG_FILE ==1 ? true : false), signatureName);
+
+			std::cout <<"begin" << CALLBACK_MSG_FILE<< signatureName <<"end" <<std::endl;
 		}
 	}
+	yr_finalize();
+	return CALLBACK_MSG_FILE;
+}
+*/
+
+int SignatureAnalyzer::Scanfile(const char * pathToFile, std::vector<std::string> files)
+{
+	yr_initialize();
+	YR_RULES* rules = NULL;
+	yr_rules_load(Librarry_file, &rules);
+	std::string h;
+	const char* str;
+	int count = files.size();
+		for (int i = 0; i < count; ++i)
+		{			
+			str = getFullNameFile(files.at(i), pathToFile);
+			yr_rules_scan_file(rules, str, ScanType, callback_function_forfile, NULL, 0);
+			log->writeLog(str, (CALLBACK_MSG_FILE? true : false), signatureName);			
+		}	
 	yr_finalize();
 	return CALLBACK_MSG_FILE;
 }
 
 int SignatureAnalyzer::callback_function_formem(int message, void* message_data, void* user_data)
 {
-	CALLBACK_MSG_FILE = 0;
+	if (!message_data) return CALLBACK_MSG_SCAN_FINISHED;
+	CALLBACK_MSG_FILE = 0;	
 	if (message == CALLBACK_MSG_RULE_MATCHING)
 	{
 		CALLBACK_MSG_FILE = 1;
+		
 		return CALLBACK_ABORT;
 	}
 	
@@ -102,4 +129,15 @@ int SignatureAnalyzer::ScanMem()
 	yr_rules_scan_mem(rules, buffer, 1024, 0, callback_function_formem, NULL, 0);
 	yr_finalize();
 	return 0;
+}
+
+int SignatureAnalyzer::ScanSingleFile(const char * pathToFile)
+{
+	yr_initialize();
+	YR_RULES* rules = NULL;
+	yr_rules_load(Librarry_file, &rules);
+	yr_rules_scan_file(rules, pathToFile, ScanType, callback_function_forfile, NULL, 0);
+	yr_finalize();
+	log->writeLog(pathToFile, (CALLBACK_MSG_FILE == 1 ? true : false), signatureName);
+	return CALLBACK_MSG_FILE;
 }

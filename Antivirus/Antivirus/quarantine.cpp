@@ -16,15 +16,30 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
 */
-
+#include <iostream>
 #include <stdio.h>
-#include <string>
+#include <windows.h>
+#include <stdlib.h>
+#include <shellapi.h>
 #include "quarantine.h"
 
-Quarantine::Quarantine():numberOfThreats(0){};
 
-void Quarantine::putToQuarantine(const char* pathToFile) {
-	char str[2048];
-	rename(pathToFile,strcat("C:\\Antivirus\\Quarantine\\", _itoa(numberOfThreats, str, 10)));
-	++numberOfThreats;
+Quarantine::Quarantine(HWND _handle): numberOfThreats(0), handle(_handle) {};
+
+void Quarantine::putToQuarantine(std::string pathToFile) {	
+		
+	std::wstring stemp = std::wstring(pathToFile.begin(), pathToFile.end());
+	LPCWSTR From = stemp.c_str();
+	std::wstring stemp1 = std::wstring(pathToQuarantine.begin(), pathToQuarantine.end());
+	LPCWSTR To = stemp1.c_str();
+
+	SHFILEOPSTRUCT op;
+	ZeroMemory(&op, sizeof(op));
+	op.hwnd = handle;
+	op.wFunc = FO_MOVE;
+	op.pFrom = From;
+	op.pTo = To;
+	op.fFlags = 0;
+	SHFileOperation(&op);
+	
 };

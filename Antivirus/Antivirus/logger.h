@@ -45,7 +45,7 @@ public:
 	/**
 		@brief Default Constructor
 	*/
-	Logger():logFileName("log.txt"){}
+	Logger():logFileName("C:\\Antivirus\\log.txt"){}
 	
 	/**
 	@brief Returns current date and time

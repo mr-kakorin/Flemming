@@ -20,14 +20,18 @@
 #ifndef _QUARANTINE_H_
 #define _QUARANTINE_H_
 
+#include <string>
+#include <windows.h>
+
 class Quarantine {
 
 	long numberOfThreats;
-
+	const std::string pathToQuarantine = "C:\\Antivirus\\Quarantine";
+	HWND handle;
 public:
-	Quarantine();
+	Quarantine(HWND);
 
-	void putToQuarantine(const char * pathToFile);
+	void putToQuarantine(std::string pathToFile);
 };
 
 #endif
