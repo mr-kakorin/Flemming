@@ -21,6 +21,7 @@
 #include <vector>
 #include <string>
 #include "logger.h"
+#include "extensionAnalyser.h"
 #include "yara.h"
 
 /**
@@ -47,6 +48,8 @@ private:
 	static int CALLBACK_MSG_FILE; ///> Data of callback message
 
 	static Logger* log; ///> LogFile object
+
+	static ExtensionAnalyser* extAnalyser;
 	/*
 		@brief Returns full name with full path to file
 	*/

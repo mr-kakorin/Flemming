@@ -19,8 +19,6 @@
 
 #include <iostream>
 #include <SignatureAnalyzer.h>
-#include <omp.h>
-
 
 const char* SignatureAnalyzer::getFullNameFile(const std::string& fName, const char* inString)const
 {
@@ -31,6 +29,7 @@ const char* SignatureAnalyzer::getFullNameFile(const std::string& fName, const c
 }
 
 Logger* SignatureAnalyzer::log = new Logger;
+ExtensionAnalyser* SignatureAnalyzer::extAnalyser = new ExtensionAnalyser;
 
 SignatureAnalyzer::SignatureAnalyzer()
 {	
@@ -61,33 +60,6 @@ int SignatureAnalyzer::callback_function_forfile(int message, void* message_data
 		return CALLBACK_CONTINUE;
 }
 
-/*
-int SignatureAnalyzer::Scanfile(const char * filename, std::vector<std::string> files)
-{
-	yr_initialize();
-	YR_RULES* rules = NULL;
-	yr_rules_load(Librarry_file, &rules);
-	std::string h;
-
-#pragma omp parallel firstprivate(signatureName, CALLBACK_MSG_FILE, log, h)
-	{
-		
-#pragma omp for ordered
-		for (int i = 0; i < files.size(); ++i)
-		{
-			h = getFullNameFile(files.at(i), filename);
-			yr_rules_scan_file(rules, h.data(), ScanType, callback_function_forfile, NULL, 0);
-#pragma omp ordered
-			//log->writeLog(h.data(), (CALLBACK_MSG_FILE ==1 ? true : false), signatureName);
-
-			std::cout <<"begin" << CALLBACK_MSG_FILE<< signatureName <<"end" <<std::endl;
-		}
-	}
-	yr_finalize();
-	return CALLBACK_MSG_FILE;
-}
-*/
-
 int SignatureAnalyzer::Scanfile(const char * pathToFile, std::vector<std::string> files)
 {
 	yr_initialize();
@@ -98,9 +70,12 @@ int SignatureAnalyzer::Scanfile(const char * pathToFile, std::vector<std::string
 	int count = files.size();
 		for (int i = 0; i < count; ++i)
 		{			
-			str = getFullNameFile(files.at(i), pathToFile);
-			yr_rules_scan_file(rules, str, ScanType, callback_function_forfile, NULL, 0);
-			log->writeLog(str, (CALLBACK_MSG_FILE? true : false), signatureName);			
+			if (extAnalyser->checkExtension(files.at(i).data()))
+			{
+				str = getFullNameFile(files.at(i), pathToFile);
+				yr_rules_scan_file(rules, str, ScanType, callback_function_forfile, NULL, 0);
+				log->writeLog(str, (CALLBACK_MSG_FILE ? true : false), signatureName);
+			}
 		}	
 	yr_finalize();
 	return CALLBACK_MSG_FILE;

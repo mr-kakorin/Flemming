@@ -40,13 +40,13 @@ int main(int argc, char* argv[])
 	start_time = omp_get_wtime();
 	//test//	
 	//
-	//
-	
-	application.ToScan("D:\\Games\\Hearthstone\\");
+	//	
+	application.ToScan("D:\\viruses\\");
 	
 	//
 	//application.ScanMemory();
 	//test
+
 	end_time = omp_get_wtime();
 	printf("time = %f", (end_time - start_time));
 
