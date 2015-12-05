@@ -17,24 +17,14 @@
 	GNU General Public License for more details.
 */
 
-#include <windows.h>
-#include <stdlib.h>
+#include <stdio.h>
+#include <string>
 #include "quarantine.h"
-
-LPCWSTR Quarantine::charToLpcwstr(const char* stringToConvert)
-{
-	wchar_t* result = new wchar_t[2048];
-	MultiByteToWideChar(0, 0, stringToConvert, -1, result, 2048);
-	return result;
-}
 
 Quarantine::Quarantine():numberOfThreats(0){};
 
 void Quarantine::putToQuarantine(const char* pathToFile) {
-	LPCWSTR sourceFile = charToLpcwstr(pathToFile);
 	char str[2048];
-	LPCWSTR destination = charToLpcwstr(strcat("C:\\Antivirus\\Quarantine\\", _itoa(numberOfThreats, str, 10)));
-	MoveFile(sourceFile,destination);
-	DeleteFile(sourceFile);
+	rename(pathToFile,strcat("C:\\Antivirus\\Quarantine\\", _itoa(numberOfThreats, str, 10)));
 	++numberOfThreats;
 };

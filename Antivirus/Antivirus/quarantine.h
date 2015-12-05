@@ -20,9 +20,6 @@
 #ifndef _QUARANTINE_H_
 #define _QUARANTINE_H_
 
-#include <string>
-#include <windows.h>
-
 class Quarantine {
 
 	long numberOfThreats;
@@ -31,8 +28,6 @@ public:
 	Quarantine();
 
 	void putToQuarantine(const char * pathToFile);
-
-	LPCWSTR charToLpcwstr(const char* stringToConvert);
 };
 
 #endif
