@@ -88,6 +88,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="antivirus.cpp" />
+    <ClCompile Include="extensionAnalyser.cpp" />
     <ClCompile Include="logger.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="quarantine.cpp" />
@@ -95,6 +96,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="antivirus.h" />
+    <ClInclude Include="extensionAnalyser.h" />
     <ClInclude Include="logger.h" />
     <ClInclude Include="quarantine.h" />
     <ClInclude Include="SignatureAnalyzer.h" />
