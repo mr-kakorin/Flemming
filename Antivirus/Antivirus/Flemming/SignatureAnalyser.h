@@ -17,6 +17,9 @@
 	GNU General Public License for more details.
 */
 
+#ifndef _SIGNATURE_ANALYSER_H_
+#define _SIGNATURE_ANALYSER_H_
+
 #include <ctime>
 #include <vector>
 #include <string>
@@ -73,3 +76,5 @@ private:
 
 	static int callback_function_formem(int, void*, void*);
 };
+
+#endif

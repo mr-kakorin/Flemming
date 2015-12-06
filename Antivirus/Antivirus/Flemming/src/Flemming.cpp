@@ -16,6 +16,7 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
 */
+
 #include <iostream>
 #include "Flemming\Flemming.h"
 #include "Flemming\Logger.h"

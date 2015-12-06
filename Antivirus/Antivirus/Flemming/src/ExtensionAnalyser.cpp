@@ -17,11 +17,8 @@
 	GNU General Public License for more details.
 */
 
-
 #include <string>
 #include "Flemming\ExtensionAnalyser.h"
-
-#include <iostream>
 
 ExtensionAnalyser::ExtensionAnalyser() :
 	significantExtensions(
@@ -75,6 +72,7 @@ ExtensionAnalyser::ExtensionAnalyser() :
 }) {};
 
 bool ExtensionAnalyser::checkExtension(const char* filename) {
+
 	/*Getting reversed extension*/
 	std::string extension = "";
 	int pointerIndex = strlen(filename) - 1;
@@ -90,6 +88,7 @@ bool ExtensionAnalyser::checkExtension(const char* filename) {
 	{
 		std::swap(extension[i], extension[n - i - 1]);
 	}
+
 	/*Check if extension is suspicious*/
 	for (int i = 0; i < significantExtensions.size(); ++i) {
 		if (extension == significantExtensions[i]) return true;
