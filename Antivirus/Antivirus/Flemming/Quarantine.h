@@ -24,18 +24,56 @@
 #include <windows.h>
 #include "Flemming\Crypter.h"
 
+/**
+@brief Class for placing files to quarantine
+*/
 class Quarantine {
-
+	
+	/**
+	@brief Number of files in quarantine
+	*/
 	long numberOfThreats;
+	
+	/**
+	@brief Path to quarantine folder
+	*/
 	const std::string pathToQuarantine = "C:\\Antivirus\\Quarantine\\";
+	
+	/**
+	@brief
+	*/
 	HWND handle;
+	
+	/**
+	@brief Class to encrypt files for quarantine
+	*/
 	static Crypter* crypter;
+	
+	/**
+	@brief
+	@param[in]
+	@return
+	*/
 	unsigned int HashRot13(const char*);
+
 public:
+	
 	Quarantine(HWND);
 
+	/**
+	@brief Put infected file to quarantine
+	@param[in] path to infected file
+	*/
 	void putToQuarantine(std::string pathToFile);
 
+	/**
+	@brief
+	@param[in]
+	@param[in]
+	@param[in]
+	@param[in]
+	@return
+	*/
 	bool CrypterQuarantineFiles(std::pair<std::vector<std::string>, std::vector<std::string>>
 		(const char*),
 		std::string(const std::string&, const char*)

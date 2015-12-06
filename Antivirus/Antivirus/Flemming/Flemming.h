@@ -121,9 +121,9 @@ class Flemming
 	void ToScanWoCheck(const char*);
 	void ToScanWoCheckWithQ(const char*);
 public:
+
 	Flemming();
 	~Flemming();
-
 	
 	/**
 	@brief  Start scan the specified directory
@@ -144,7 +144,6 @@ public:
 	The function uses std::output now
 	*/
 	static void outMessageToUser(const std::string&);
-
 
 	/**
 	@brief Check equal of two string

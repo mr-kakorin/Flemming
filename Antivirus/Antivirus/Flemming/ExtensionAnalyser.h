@@ -23,15 +23,25 @@
 #include <vector>
 #include <string> 
 
+/**
+@brief 
+*/
 class ExtensionAnalyser {
 
+	/**
+	@brief Array of suspicious extensions
+	*/
 	const std::vector<std::string> significantExtensions;
 
 public:
 
 	ExtensionAnalyser();
 
-	/*Return true if file extension is suspicious*/
+	/**
+	@brief Check file extension
+	@param[in] path to file to check
+	@return true if extension is suspicious, false otherwise
+	*/
 	bool checkExtension(const char* filename);
 
 };

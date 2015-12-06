@@ -20,14 +20,39 @@
 #ifndef _CRYPTER_FLEEMING
 #define _CRYPTER_FLEEMING
 
+/**
+@brief Encryption class
+
+Class for encrypting files for quarantine
+*/
 class Crypter {
 
 public:
 	Crypter() {};
 	~Crypter() {};
+
+	/**
+	@brief Convert char to Base64 system
+	@param[in] char to convert
+	@return char in Base64
+	*/
 	char Base64Char(unsigned char);
+
+	/**
+	@brief Convert string to Base64 system
+	@param[in] string to convert
+	@param[in] length of input string
+	@param[in] string for result
+	@return length of converted string
+	*/
 	int Base64Encode(char*inStr, int len, char*outStr);
-	void CryptFile(const char*, const char*); 
+
+	/**
+	@brief Convert file to Base64 system
+	@param[in] path to file to convert
+	@param[in] path to file for result
+	*/
+	void CryptFile(const char* inFileName, const char* outFileName);
 };
 
 #endif
