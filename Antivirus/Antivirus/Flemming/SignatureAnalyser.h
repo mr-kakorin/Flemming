@@ -41,13 +41,11 @@ public:
 	@brief Start scan file
 	@return  Type of result of scan file
 	*/
-	int Scanfile(const char *, std::vector<std::string>);
+	int Scanfile(const char *, std::vector<std::string>, bool);
 	int ScanSingleFile(const char*);
 	int ScanMem();
-	Logger* getLogger()
-	{
-		return log;
-	}
+	int ScanDescriptor(const char* pathToFile, std::vector<std::string>, LPCWSTR (const char*));
+
 private:	
 
 	static char signatureName[128]; ///> Name of signature in string format
@@ -62,6 +60,7 @@ private:
 	*/
 	const char* getFullNameFile(const std::string&, const char*)const;
 	int ScanType; ///> Type of scanning
+	char *Librarry_file_fd;
 	char *Librarry_file; ///> Atavism
 	/**
 	@brief Function for set type of scan

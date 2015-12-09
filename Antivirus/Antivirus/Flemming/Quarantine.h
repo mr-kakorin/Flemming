@@ -74,10 +74,8 @@ public:
 	@param[in]
 	@return
 	*/
-	bool CrypterQuarantineFiles(std::pair<std::vector<std::string>, std::vector<std::string>>
-		(const char*),
-		std::string(const std::string&, const char*)
-		
+	bool CrypterQuarantineFiles(std::pair<std::vector<std::string>, std::vector<std::string>>(const char*),
+		std::string(const std::string&, const char*)		
 		);
 };
 

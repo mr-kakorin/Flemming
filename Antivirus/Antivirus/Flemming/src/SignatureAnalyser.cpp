@@ -35,6 +35,7 @@ SignatureAnalyser::SignatureAnalyser()
 {	
 	ScanType = SCAN_FLAGS_FAST_MODE;
 	Librarry_file = "C:\\Antivirus\\SignaturesDB";	
+	Librarry_file_fd = "C:\\Antivirus\\DBpuck";
 }
 
 SignatureAnalyser::~SignatureAnalyser()
@@ -60,16 +61,16 @@ int SignatureAnalyser::callback_function_forfile(int message, void* message_data
 		return CALLBACK_CONTINUE;
 }
 
-int SignatureAnalyser::Scanfile(const char * pathToFile, std::vector<std::string> files)
+int SignatureAnalyser::Scanfile(const char * pathToFile, std::vector<std::string> files, bool fastscan)
 {
 	yr_initialize();
 	YR_RULES* rules = NULL;
-	yr_rules_load(Librarry_file, &rules);
-	std::string h;
+	yr_rules_load(Librarry_file, &rules);	
 	const char* str;
 	int count = files.size();
+	if (fastscan)
 		for (int i = 0; i < count; ++i)
-		{			
+		{						
 			if (extAnalyser->checkExtension(files.at(i).data()))
 			{
 				str = getFullNameFile(files.at(i), pathToFile);
@@ -78,6 +79,13 @@ int SignatureAnalyser::Scanfile(const char * pathToFile, std::vector<std::string
 
 			}
 		}	
+	else
+		for (int i = 0; i < count; ++i)
+		{			
+				str = getFullNameFile(files.at(i), pathToFile);
+				yr_rules_scan_file(rules, str, ScanType, callback_function_forfile, NULL, 0);
+				log->writeLog(str, (CALLBACK_MSG_FILE ? true : false), signatureName);			
+		}
 	yr_finalize();
 	return CALLBACK_MSG_FILE;
 }
@@ -105,6 +113,7 @@ int SignatureAnalyser::ScanMem()
 	uint8_t* buffer = new uint8_t[1024];
 	yr_rules_scan_mem(rules, buffer, 1024, 0, callback_function_formem, NULL, 0);
 	yr_finalize();
+	log->writeLog("processes", (CALLBACK_MSG_FILE == 1 ? true : false), signatureName);
 	return 0;
 }
 
@@ -116,5 +125,29 @@ int SignatureAnalyser::ScanSingleFile(const char * pathToFile)
 	yr_rules_scan_file(rules, pathToFile, ScanType, callback_function_forfile, NULL, 0);
 	yr_finalize();
 	log->writeLog(pathToFile, (CALLBACK_MSG_FILE == 1 ? true : false), signatureName);
+	return CALLBACK_MSG_FILE;
+}
+
+int SignatureAnalyser::ScanDescriptor(const char* pathToFile, std::vector<std::string> files, LPCWSTR charTolpc(const char*))
+{
+	yr_initialize();
+	YR_RULES* rules = NULL;
+	yr_rules_load(Librarry_file_fd, &rules);
+	const char* str;
+	int count = files.size();
+	for (int i = 0; i < count; ++i)
+	{
+		str = getFullNameFile(files.at(i), pathToFile);
+		yr_rules_scan_fd(rules,
+			CreateFile(charTolpc(str),
+				FILE_READ_DATA | FILE_READ_ATTRIBUTES | FILE_READ_EA,
+				FILE_SHARE_READ, NULL,
+				OPEN_ALWAYS,
+				FILE_ATTRIBUTE_READONLY,
+				NULL),
+			ScanType, callback_function_forfile, NULL, 0);
+		log->writeLog(str, (CALLBACK_MSG_FILE ? true : false), signatureName);
+	}
+	yr_finalize();	
 	return CALLBACK_MSG_FILE;
 }

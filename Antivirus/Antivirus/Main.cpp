@@ -38,18 +38,17 @@
 int main(int argc, char* argv[])
 {
 	Flemming application;
-	double start_time, end_time;
-	start_time = omp_get_wtime();
+	//double start_time, end_time;
+	//start_time = omp_get_wtime();
 	//test//	
 	//
 	//				application.ToScanWithQ("D:\\viruses\\");	
 	//
-	//	
-	application.ScanMemory();
+	//	application.ScanMemory();
 	//test
 
-	end_time = omp_get_wtime();
-	printf("time = %f", (end_time - start_time));
+	//end_time = omp_get_wtime();
+	//printf("time = %f", (end_time - start_time));
 
 	switch (argc) {
 	case 1:
@@ -85,7 +84,27 @@ int main(int argc, char* argv[])
 	case 3:
 		if (Flemming::isThisCommand(application.checkArgumentString, argv[1]))
 		{
-			application.ToScan(argv[2]);
+			application.ToScan(argv[2],true);
+		}
+		if (Flemming::isThisCommand(application.checkArgumentWithQuarantineString, argv[1]))
+		{
+			application.ToScanWithQ(argv[2],true);
+		}
+		if (Flemming::isThisCommand(application.fullCheckArgumentWithQuarantineString, argv[1]))
+		{
+			application.ToScanWithQ(argv[2], false);
+		}
+		if (Flemming::isThisCommand(application.fullCheckArgumentString, argv[1]))
+		{
+			application.ToScan(argv[2], false);
+		}
+		if (Flemming::isThisCommand(application.CheckArgumentDescriptorString, argv[1]))
+		{
+			application.ToScanDesc(argv[2]);
+		}
+		if (Flemming::isThisCommand(application.checkMemoryString, argv[1]))
+		{
+			application.ScanMemory();
 		}
 		else
 		{

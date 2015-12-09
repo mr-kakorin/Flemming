@@ -59,7 +59,7 @@ class Flemming
 	@param[in] stringToConvert a pointer to an array of chars
 	@return LPCWSTR string
 	*/
-	LPCWSTR charToLpcwstr(const char* stringToConvert);
+	static LPCWSTR charToLpcwstr(const char* stringToConvert);
 
 
 	/**
@@ -118,8 +118,8 @@ class Flemming
 	static Quarantine* quarantiner;
 
 	std::string getSystemDirectory();
-	void ToScanWoCheck(const char*);
-	void ToScanWoCheckWithQ(const char*);
+	void ToScanWoCheck(const char*,bool);
+	
 public:
 
 	Flemming();
@@ -132,8 +132,9 @@ public:
 	This function starts scan the directory and uses std::cout for
 	write out process information.
 	*/
-	void ToScan(const char* inString);
-	void ToScanWithQ(const char* inString);
+	void ToScan(const char* inString,bool);
+	void ToScanDesc(const char* inString);
+	void ToScanWithQ(const char* inString,bool);
 	void ScanSystemFolder();
 	void ScanMemory();
 
@@ -156,6 +157,17 @@ public:
 	static bool isThisCommand(const std::string&, const char*);
 
 	/*constants implementation*/
+	const std::string checkNoPathErrorText = "Please type path to file or directory to check.\n";
+
+	const std::string checkArgumentWithQuarantineString = "-check-q";
+
+	const std::string checkMemoryString = "-check-mem";
+
+	const std::string fullCheckArgumentWithQuarantineString = "-check-q-f";
+
+	const std::string fullCheckArgumentString = "-check-f";
+
+	const std::string CheckArgumentDescriptorString = "-check-fd";
 
 	// The command for show help information
 	const std::string helpArgumentString = "-help";
@@ -173,9 +185,12 @@ public:
 	const std::string wrongArgumentsErrorString = "\nWrong arguments. Use " + helpArgumentString + " for information.\n";
 
 	/// Help text
-	const std::string helpOutputText = "\n" + checkArgumentString + " <path> - check file or directory\n" +
+	const std::string helpOutputText = '\n' + checkArgumentString + " <path> - check file or directory\n" +
 		checkSystemFoulderArgumentString + " - check system directory\n" +
-		infoArgumentString + " - about program\n";
+		infoArgumentString + " - about program\n" +
+		checkArgumentWithQuarantineString + "<path> - check file or directory\n" +
+		checkMemoryString + "check running processes\n" +
+		CheckArgumentDescriptorString + "check puckers and crypters\n";
 
 	/// Information about programm
 	const std::string infoOutputText = "\nFlemming ver 0.0.1 Copyright(C) 2015\n"
@@ -184,7 +199,7 @@ public:
 		"Program comes with ABSOLUTELY NO WARRANTY.\n"
 		"AMCP SPBU 2015\n";
 	/// Text of error if path to file is not exists
-	const std::string checkNoPathErrorText = "Please type path to file or directory to check.\n";
+
 
 };
 

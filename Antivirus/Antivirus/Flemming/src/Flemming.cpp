@@ -62,7 +62,7 @@ Flemming::PathTo Flemming::isPathToFile(const char* stringToCheck)
 }
 Logger* logger = new Logger;
 
-void Flemming::ToScan(const char* inString)
+void Flemming::ToScan(const char* inString, bool scantype)
 {
 	std::vector<std::string> folders;
 	std::vector<std::string> files;
@@ -79,10 +79,10 @@ void Flemming::ToScan(const char* inString)
 		subFilesFolders = SeeFilesFolders(inString);
 		for (int i = 0; i < subFilesFolders.first.size();++i)
 		{
-			ToScan(getFullNameFolder(subFilesFolders.first.at(i), inString).data());
+			ToScanWoCheck(getFullNameFolder(subFilesFolders.first.at(i), inString).data(), scantype);
 			
 		}		
-			analyser->Scanfile(inString, subFilesFolders.second);
+			analyser->Scanfile(inString, subFilesFolders.second, scantype);
 
 
 		break;
@@ -92,7 +92,7 @@ void Flemming::ToScan(const char* inString)
 	}
 }
 
-void Flemming::ToScanWoCheck(const char* inString)
+void Flemming::ToScanWoCheck(const char* inString, bool scantype)
 {
 	std::vector<std::string> folders;
 	std::vector<std::string> files;
@@ -102,9 +102,9 @@ void Flemming::ToScanWoCheck(const char* inString)
 
 		for (int i = 0; i < subFilesFolders.first.size();++i)
 		{
-			ToScanWoCheck(getFullNameFolder(subFilesFolders.first.at(i), inString).data());
+			ToScanWoCheck(getFullNameFolder(subFilesFolders.first.at(i), inString).data(), scantype);
 		}
-		analyser->Scanfile(inString, subFilesFolders.second);
+		analyser->Scanfile(inString, subFilesFolders.second, scantype);
 	
 }
 
@@ -183,7 +183,7 @@ Flemming::~Flemming()
 
 void Flemming::ScanMemory()
 {
-	analyser->ScanMem();
+	analyser->ScanMem();	
 }
 
 std::string Flemming::getSystemDirectory() {
@@ -209,7 +209,7 @@ std::string Flemming::getSystemDirectory() {
 void Flemming::ScanSystemFolder()
 {
 	try {
-		ToScan(getSystemDirectory().data());
+		ToScan(getSystemDirectory().data(),false);
 	}
 	catch (const char* e)
 	{
@@ -217,9 +217,9 @@ void Flemming::ScanSystemFolder()
 	}
 }
 
-void Flemming::ToScanWithQ(const char* inString)
+void Flemming::ToScanWithQ(const char* inString, bool scantype)
 {
-	ToScan(inString);
+	ToScan(inString, scantype);
 
 	std::vector<std::string> filesToQuarantine = logger->GetAllSuspectedFiles();
 	if (!filesToQuarantine.empty())
@@ -233,7 +233,7 @@ void Flemming::ToScanWithQ(const char* inString)
 	}
 }
 
-void Flemming::ToScanWoCheckWithQ(const char* inString)
+void Flemming::ToScanDesc(const char* inString)
 {
 	std::vector<std::string> folders;
 	std::vector<std::string> files;
@@ -243,8 +243,7 @@ void Flemming::ToScanWoCheckWithQ(const char* inString)
 
 	for (int i = 0; i < subFilesFolders.first.size();++i)
 	{
-		ToScanWoCheckWithQ(getFullNameFolder(subFilesFolders.first.at(i), inString).data());
+		ToScanDesc(getFullNameFolder(subFilesFolders.first.at(i), inString).data());
 	}
-	analyser->Scanfile(inString, subFilesFolders.second);
-
+	analyser->ScanDescriptor(inString, subFilesFolders.second, charToLpcwstr);
 }
