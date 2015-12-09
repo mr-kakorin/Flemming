@@ -70,13 +70,13 @@ int SignatureAnalyser::Scanfile(const char * pathToFile, std::vector<std::string
 	int count = files.size();
 		for (int i = 0; i < count; ++i)
 		{			
-			//if (extAnalyser->checkExtension(files.at(i).data()))
-			//{
+			if (extAnalyser->checkExtension(files.at(i).data()))
+			{
 				str = getFullNameFile(files.at(i), pathToFile);
 				yr_rules_scan_file(rules, str, ScanType, callback_function_forfile, NULL, 0);
 				log->writeLog(str, (CALLBACK_MSG_FILE ? true : false), signatureName);
-				
-			//}
+
+			}
 		}	
 	yr_finalize();
 	return CALLBACK_MSG_FILE;
@@ -85,7 +85,8 @@ int SignatureAnalyser::Scanfile(const char * pathToFile, std::vector<std::string
 int SignatureAnalyser::callback_function_formem(int message, void* message_data, void* user_data)
 {
 	if (!message_data) return CALLBACK_MSG_SCAN_FINISHED;
-	CALLBACK_MSG_FILE = 0;	
+	CALLBACK_MSG_FILE = 0;
+	
 	if (message == CALLBACK_MSG_RULE_MATCHING)
 	{
 		CALLBACK_MSG_FILE = 1;

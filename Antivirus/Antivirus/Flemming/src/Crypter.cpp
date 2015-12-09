@@ -54,13 +54,13 @@ int Crypter::Base64Encode(char*inStr, int len, char*outStr) {
 	return j;
 }
 
-void Crypter::CryptFile(const char* inFileName, const char* outFileName)
+bool Crypter::CryptFile(const char* inFileName, const char* outFileName)
 {
 	std::ifstream inFile(inFileName, std::ios_base::binary);
 	
-	if (!inFile) std::cout << "ne ok in" << std::endl;
+	if (!inFile) return false;
 	std::ofstream outFile(outFileName, std::ios_base::binary);
-	if (!outFile) std::cout << "ne ok out" << std::endl;
+	if (!outFile) return false;
 	//std::cout << inFileName << std::endl;
 	char inStr[3], outStr[4];
 	int s, count = 0;
@@ -72,5 +72,6 @@ void Crypter::CryptFile(const char* inFileName, const char* outFileName)
 	}
 	inFile.close();
 	outFile.close();
-	remove(inFileName);	
+	remove(inFileName);
+	return true;
 }

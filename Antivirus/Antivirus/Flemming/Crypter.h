@@ -26,11 +26,6 @@
 Class for encrypting files for quarantine
 */
 class Crypter {
-
-public:
-	Crypter() {};
-	~Crypter() {};
-
 	/**
 	@brief Convert char to Base64 system
 	@param[in] char to convert
@@ -46,13 +41,16 @@ public:
 	@return length of converted string
 	*/
 	int Base64Encode(char*inStr, int len, char*outStr);
+public:
+	Crypter() {};
+	~Crypter() {};
 
 	/**
 	@brief Convert file to Base64 system
 	@param[in] path to file to convert
 	@param[in] path to file for result
 	*/
-	void CryptFile(const char* inFileName, const char* outFileName);
+	bool CryptFile(const char* inFileName, const char* outFileName);
 };
 
 #endif

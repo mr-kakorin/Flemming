@@ -50,12 +50,13 @@ bool Quarantine::CrypterQuarantineFiles
 	int count = files.size();
 	std::string fullName;
 	char str[1024];
+	bool result = true;
 	for (int i = 0; i < count;++i)
 	{
 		fullName = getFullName(files.at(i), pathToQuarantine.data());		
-		crypter->CryptFile(fullName.data(),(pathToQuarantine + std::string(_itoa(HashRot13(_itoa(numberOfThreats++, str, 10)), str, 10))).data());
+		result = result & (crypter->CryptFile(fullName.data(),(pathToQuarantine + std::string(_itoa(HashRot13(_itoa(numberOfThreats++, str, 10)), str, 10))).data()));
 	}
-
+	return result;
 }
 
 unsigned int Quarantine::HashRot13(const char * str)

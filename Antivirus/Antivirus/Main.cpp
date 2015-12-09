@@ -44,7 +44,8 @@ int main(int argc, char* argv[])
 	//
 	//				application.ToScanWithQ("D:\\viruses\\");	
 	//
-	//	application.ScanMemory();
+	//	
+	application.ScanMemory();
 	//test
 
 	end_time = omp_get_wtime();
