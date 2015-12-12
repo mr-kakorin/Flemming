@@ -22,7 +22,6 @@
 
 //addiction list
 
-#include <windows.h>
 #include "Flemming\CommonHeaders.h"
 #include "Flemming\SignatureAnalyser.h"
 #include "Flemming\Quarantine.h"

@@ -19,37 +19,11 @@
 
 #include <iostream>
 #include <stdio.h>
-#include <omp.h>
 #include "Flemming\Flemming.h"
-
-/*
-	@brief Processing of entered command
-
-	If type one argument: Error. The Flemming must launch with one or more parametres
-	Two arguments:
-		It can be command: '-checksys', '-help', '-info'
-		Else it error command
-
-	Three arguments:
-		It can be command '-check', third argument is path to check file or folder
-		Else it error command
-*/
 
 int main(int argc, char* argv[])
 {
 	Flemming application;
-	//double start_time, end_time;
-	//start_time = omp_get_wtime();
-	//test//	
-	//
-	//				application.ToScanWithQ("D:\\viruses\\");	
-	//
-	//	application.ScanMemory();
-	//test
-
-	//end_time = omp_get_wtime();
-	//printf("time = %f", (end_time - start_time));
-
 	application.startWork(argc, argv);
 	
 	return 0;
