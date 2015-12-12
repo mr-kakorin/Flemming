@@ -18,8 +18,6 @@
 */
 
 #include <iostream>
-#include <fstream>
-#include <ctime>
 #include "Flemming\Logger.h"
 
 Logger::Logger(const std::string inputLogFileName) : logFileName(inputLogFileName) {}

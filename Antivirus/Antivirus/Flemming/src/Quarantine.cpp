@@ -17,16 +17,12 @@
 	GNU General Public License for more details.
 */
 
-#include <iostream>
-#include <stdio.h>
-#include <fstream>
-#include <windows.h>
-#include <stdlib.h>
-#include <vector>
-#include <shellapi.h>
-#include "Flemming\Quarantine.h"
 
-Quarantine::Quarantine(HWND _handle): numberOfThreats(16), handle(_handle) {};
+#include <windows.h>
+#include "Flemming\Quarantine.h"
+#include "Flemming\OSAPI.h"
+#include "Flemming\SharedMethods.h"
+Quarantine::Quarantine(): numberOfThreats(16) {};
 
 Crypter* Quarantine::crypter = new Crypter;
 
@@ -40,20 +36,16 @@ void Quarantine::putToQuarantine(std::string pathToFile) {
 	remove(pathToFile.c_str());
 };
 
-bool Quarantine::CrypterQuarantineFiles
-   (std::pair<std::vector<std::string>, std::vector<std::string>> getSubFilesFolders
-	    (const char*),
-	std::string getFullName (const std::string&, const char*))
-
+bool Quarantine::CrypterQuarantineFiles()
 {	
-	std::vector<std::string> files = getSubFilesFolders(pathToQuarantine.data()).second;
+	std::vector<std::string> files = OSAPI::SeeFilesFolders(pathToQuarantine.data()).second;
 	int count = files.size();
 	std::string fullName;
 	char str[1024];
 	bool result = true;
 	for (int i = 0; i < count;++i)
 	{
-		fullName = getFullName(files.at(i), pathToQuarantine.data());		
+		fullName = SharedMethods::getFullNameFile(files.at(i), pathToQuarantine.data());		
 		result = result & (crypter->CryptFile(fullName.data(),(pathToQuarantine + std::string(_itoa(HashRot13(_itoa(numberOfThreats++, str, 10)), str, 10))).data()));
 	}
 	return result;

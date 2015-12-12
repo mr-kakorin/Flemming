@@ -23,12 +23,10 @@
 //addiction list
 
 #include <windows.h>
-#include <fstream>
-#include <vector>
-#include <string>
-#include <iomanip>
+#include "Flemming\CommonHeaders.h"
 #include "Flemming\SignatureAnalyser.h"
 #include "Flemming\Quarantine.h"
+
 /**
 @brief API Flemming
 
@@ -36,94 +34,12 @@ Class for working with the methods of Flemming
 */
 class Flemming
 {
-	/**
-	@brief Checking existence of a directory
-
-	@param[in] directoryNameToCheck Name of a checking directory
-	@return true - if the directory exists, false - if directory doesn't exists
-	*/
-	bool isDirectoryExists(LPCWSTR directoryNameToCheck);
-
-
-	/**
-	@brief Checking existence of a file
-
-	@param[in] directoryNameToCheck Name of a checking file
-	@return true - if the file exists, false - if file doesn't exists
-	*/
-	bool isFileExists(LPCWSTR fileNameToCheck);
-
-
-	/**
-	@brief Convert a string of char to LPCWSTR
-	@param[in] stringToConvert a pointer to an array of chars
-	@return LPCWSTR string
-	*/
-	static LPCWSTR charToLpcwstr(const char* stringToConvert);
-
-
-	/**
-	@brief Type of file from path
-	*/
-	enum PathTo {
-		PathToFolder,	///< The path to folder
-		PathToFile,		///< The path to file
-		NotExist 		///< The path to nonexist file
-	};
-
-
-	/**
-	@brief Detect type of path to file
-
-	@param[in] stringToCheck Path to file
-	@return Type of path to file
-	*/
-	PathTo isPathToFile(const char* stringToCheck);
-
-	/**
-	@brief Get folder contain
-	@param[in] path Path to folder
-	@param[in] folders To this vector write folder list
-	@param[in] files To this vector write file list
-
-	Scan the path and return list of folders and files in the directory
-	*/
-	static void GetFoldersAndFilesList(std::string path,
-		std::vector<std::string> &folders,
-		std::vector<std::string> &files);
-
-
-
-	/// Wrap under get Folders and Files list
-	static std::pair<std::vector<std::string>, std::vector<std::string>> SeeFilesFolders(const char*);
-
-	/**
-	@brief Get fullname of file
-	@param[in] fName Name of file
-	@param[in] inString Path to file
-	@return Full name of file with full path
-	*/
-	static std::string getFullNameFile(const std::string&, const char*);
-
-	/**
-	@brief Get fullname of folder
-	@param[in] fName Name of folder
-	@param[in] inString Path to the folder
-	@return Full name of folder with full path
-	*/
-	std::string getFullNameFolder(const std::string&, const char*);
-	
 	static SignatureAnalyser* analyser;
 
 	static Quarantine* quarantiner;
 
-	std::string getSystemDirectory();
-	void ToScanWoCheck(const char*,bool);
 	
-public:
-
-	Flemming();
-	~Flemming();
+	void ToScanWoCheck(const char*,bool);
 	
 	/**
 	@brief  Start scan the specified directory
@@ -132,29 +48,13 @@ public:
 	This function starts scan the directory and uses std::cout for
 	write out process information.
 	*/
-	void ToScan(const char* inString,bool);
+	void ToScan(const char* inString, bool);
 	void ToScanDesc(const char* inString);
-	void ToScanWithQ(const char* inString,bool);
+	void ToScanWithQ(const char* inString, bool);
 	void ScanSystemFolder();
 	void ScanMemory();
 
-	/**
-	@brief Function print message in output device
-	@param[in] message Text of message
 
-	The function uses std::output now
-	*/
-	static void outMessageToUser(const std::string&);
-
-	/**
-	@brief Check equal of two string
-	@param[in] message First string
-	@param[in] consoleArgument Second string
-	@return true - if first string equals second string, else - false
-
-	This function replaces operator '==' for two string
-	*/
-	static bool isThisCommand(const std::string&, const char*);
 
 	/*constants implementation*/
 	const std::string checkNoPathErrorText = "Please type path to file or directory to check.\n";
@@ -201,6 +101,29 @@ public:
 	/// Text of error if path to file is not exists
 
 
+public:
+
+	Flemming();
+	~Flemming();
+	
+	bool startWork(int, char**);
+	/**
+	@brief Function print message in output device
+	@param[in] message Text of message
+
+	The function uses std::output now
+	*/
+	static void outMessageToUser(const std::string&);
+
+	/**
+	@brief Check equal of two string
+	@param[in] message First string
+	@param[in] consoleArgument Second string
+	@return true - if first string equals second string, else - false
+
+	This function replaces operator '==' for two string
+	*/
+	static bool isThisCommand(const std::string&, const char*);
 };
 
 #endif

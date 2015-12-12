@@ -17,7 +17,6 @@
 	GNU General Public License for more details.
 */
 
-#include <string>
 #include "Flemming\ExtensionAnalyser.h"
 
 ExtensionAnalyser::ExtensionAnalyser() :

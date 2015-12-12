@@ -20,9 +20,7 @@
 #ifndef _SIGNATURE_ANALYSER_H_
 #define _SIGNATURE_ANALYSER_H_
 
-#include <ctime>
-#include <vector>
-#include <string>
+#include "Flemming\CommonHeaders.h"
 #include "Flemming\Logger.h"
 #include "Flemming\ExtensionAnalyser.h"
 #include "yara.h"
@@ -32,6 +30,7 @@
 
 This class make custom wrap under Yara library
 */
+
 class SignatureAnalyser
 {
 public:	
@@ -55,10 +54,7 @@ private:
 	static Logger* log; ///> LogFile object
 
 	static ExtensionAnalyser* extAnalyser;
-	/*
-		@brief Returns full name with full path to file
-	*/
-	const char* getFullNameFile(const std::string&, const char*)const;
+	
 	int ScanType; ///> Type of scanning
 	char *Librarry_file_fd;
 	char *Librarry_file; ///> Atavism

@@ -20,8 +20,7 @@
 #ifndef _EXTENSION_ANALYSER_H_
 #define _EXTENSION_ANALYSER_H_
 
-#include <vector>
-#include <string> 
+#include "Flemming\CommonHeaders.h"
 
 /**
 @brief 

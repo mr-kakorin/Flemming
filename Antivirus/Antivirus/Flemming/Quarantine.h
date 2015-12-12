@@ -20,8 +20,7 @@
 #ifndef _QUARANTINE_H_
 #define _QUARANTINE_H_
 
-#include <string>
-#include <windows.h>
+#include "Flemming\CommonHeaders.h"
 #include "Flemming\Crypter.h"
 
 /**
@@ -40,11 +39,6 @@ class Quarantine {
 	const std::string pathToQuarantine = "C:\\Antivirus\\Quarantine\\";
 	
 	/**
-	@brief
-	*/
-	HWND handle;
-	
-	/**
 	@brief Class to encrypt files for quarantine
 	*/
 	static Crypter* crypter;
@@ -58,25 +52,21 @@ class Quarantine {
 
 public:
 	
-	Quarantine(HWND);
+	Quarantine();
 
 	/**
 	@brief Put infected file to quarantine
+
 	@param[in] path to infected file
 	*/
 	void putToQuarantine(std::string pathToFile);
 
 	/**
 	@brief
-	@param[in]
-	@param[in]
-	@param[in]
-	@param[in]
+	
 	@return
 	*/
-	bool CrypterQuarantineFiles(std::pair<std::vector<std::string>, std::vector<std::string>>(const char*),
-		std::string(const std::string&, const char*)		
-		);
+	bool CrypterQuarantineFiles();
 };
 
 #endif

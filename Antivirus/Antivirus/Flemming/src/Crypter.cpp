@@ -17,7 +17,7 @@
 	GNU General Public License for more details.
 */
 
-#include <iostream>
+
 #include <fstream>
 #include "Flemming\Crypter.h"
 
@@ -61,7 +61,6 @@ bool Crypter::CryptFile(const char* inFileName, const char* outFileName)
 	if (!inFile) return false;
 	std::ofstream outFile(outFileName, std::ios_base::binary);
 	if (!outFile) return false;
-	//std::cout << inFileName << std::endl;
 	char inStr[3], outStr[4];
 	int s, count = 0;
 	while (inFile.peek() != EOF) {

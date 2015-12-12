@@ -20,10 +20,7 @@
 #ifndef _LOGGER_H_
 #define _LOGGER_H_
 
-#include <vector>
-#include <ctime>
-#include <fstream>
-#include <string>
+#include "Flemming\CommonHeaders.h"
 
 /**
 	@brief Object for work with log files

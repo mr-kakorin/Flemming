@@ -20,6 +20,8 @@
 #ifndef _CRYPTER_FLEEMING
 #define _CRYPTER_FLEEMING
 
+#include "Flemming\CommonHeaders.h"
+
 /**
 @brief Encryption class
 
