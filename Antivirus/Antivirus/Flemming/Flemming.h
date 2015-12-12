@@ -105,7 +105,19 @@ public:
 
 	Flemming();
 	~Flemming();
-	
+
+	/*
+	@brief Processing of entered command
+
+	If type one argument: Error. The Flemming must launch with one or more parametres
+	Two arguments:
+	It can be command: '-checksys', '-help', '-info'
+	Else it error command
+
+	Three arguments:
+	It can be command '-check', third argument is path to check file or folder
+	Else it error command
+	*/
 	bool startWork(int, char**);
 	/**
 	@brief Function print message in output device
