@@ -3,6 +3,8 @@
 
 #include "Flemming\CommonHeaders.h"
 #include <windows.h>
+#include <tchar.h>
+#include <iostream>
 class OSAPI {
 
 	/**
@@ -33,7 +35,7 @@ class OSAPI {
 	static void GetFoldersAndFilesList(std::string path,
 		std::vector<std::string> &folders,
 		std::vector<std::string> &files);
-
+	
 public:	
 
 	/**
@@ -44,6 +46,8 @@ public:
 		PathToFile,		///< The path to file
 		NotExist 		///< The path to nonexist file
 	};
+
+	static const char* getPathToExecutable();	
 
 	static std::string getSystemDirectory();
 
@@ -63,6 +67,11 @@ public:
 	@return LPCWSTR string
 	*/
 	static LPCWSTR charToLpcwstr(const char* stringToConvert);
+
+	static LPWSTR CharToLPWSTR(LPCSTR char_string);
+
+	static const char* LPWSTRtoChar(LPWSTR string);
+
 };
 
 #endif

@@ -20,7 +20,10 @@
 #include <iostream>
 #include <stdio.h>
 #include "Flemming\Flemming.h"
-
+#include <direct.h>
+#include <conio.h>
+#include <windows.h>
+#include "Flemming\OSAPI.h"
 int main(int argc, char* argv[])
 {
 	Flemming application;

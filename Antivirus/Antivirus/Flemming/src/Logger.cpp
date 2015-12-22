@@ -21,6 +21,12 @@
 #include "Flemming\Logger.h"
 
 Logger::Logger(const std::string inputLogFileName) : logFileName(inputLogFileName) {}
+Logger::Logger()
+{
+	char current_work_dir[FILENAME_MAX];
+	_getcwd(current_work_dir, sizeof(current_work_dir));	
+	std::cout << logFileName;
+}
 char* Logger::getCurrentDateAndTime(char *currentDateAndTimeStr)
 {
 	time_t rawtime;
