@@ -25,7 +25,7 @@
 #include "Flemming\CommonHeaders.h"
 #include "Flemming\SignatureAnalyser.h"
 #include "Flemming\Quarantine.h"
-
+#include "Flemming\FileContainer.h"
 /**
 @brief API Flemming
 
@@ -37,6 +37,7 @@ class Flemming
 
 	static Quarantine* quarantiner;
 
+	FileContainer* allFilesInfo;
 	
 	void ToScanWoCheck(const char*,bool);
 	
@@ -53,7 +54,7 @@ class Flemming
 	void ScanSystemFolder();
 	void ScanMemory();
 
-
+	void fillFileList(const char* inString);
 
 	/*constants implementation*/
 	const std::string checkNoPathErrorText = "Please type path to file or directory to check.\n";

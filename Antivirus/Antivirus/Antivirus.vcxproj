@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="Flemming\src\Crypter.cpp" />
     <ClCompile Include="Flemming\src\ExtensionAnalyser.cpp" />
+    <ClCompile Include="Flemming\src\FileContainer.cpp" />
     <ClCompile Include="Flemming\src\Flemming.cpp" />
     <ClCompile Include="Flemming\src\Logger.cpp" />
     <ClCompile Include="Flemming\src\OSAPI.cpp" />
@@ -25,6 +26,7 @@
     <ClInclude Include="Flemming\CommonHeaders.h" />
     <ClInclude Include="Flemming\Crypter.h" />
     <ClInclude Include="Flemming\ExtensionAnalyser.h" />
+    <ClInclude Include="Flemming\FileContainer.h" />
     <ClInclude Include="Flemming\Flemming.h" />
     <ClInclude Include="Flemming\Logger.h" />
     <ClInclude Include="Flemming\OSAPI.h" />

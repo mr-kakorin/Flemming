@@ -25,7 +25,6 @@
 
 SignatureAnalyser* Flemming::analyser = new SignatureAnalyser;
 Quarantine* Flemming::quarantiner = new Quarantine;
-Logger* logger = new Logger;
 
 void Flemming::ToScan(const char* inString, bool scantype)
 {
@@ -113,13 +112,13 @@ void Flemming::ToScanWithQ(const char* inString, bool scantype)
 {
 	ToScan(inString, scantype);
 
-	std::vector<std::string> filesToQuarantine = logger->GetAllSuspectedFiles();
+	std::vector<std::string> filesToQuarantine = analyser->GetAllSuspectedFiles();
 	if (!filesToQuarantine.empty())
 	{
 		for (int i = 0;i < filesToQuarantine.size();++i)
 		{
 			quarantiner->putToQuarantine(filesToQuarantine.at(i));
-			//std::cout << filesToQuarantine.at(i) << std::endl;
+			
 		}
 		quarantiner->CrypterQuarantineFiles();
 	}
@@ -146,34 +145,35 @@ bool Flemming::startWork(int argc, char** argv)
 	case 1:
 		Flemming::outMessageToUser(wrongArgumentsNumberErrorString);
 		break;
+
 	case 2:
 		if (Flemming::isThisCommand(helpArgumentString, argv[1]))
 		{
 			Flemming::outMessageToUser(helpOutputText);
 		}
-		else {
-			if (Flemming::isThisCommand(infoArgumentString, argv[1]))
+		
+		if (Flemming::isThisCommand(infoArgumentString, argv[1]))
 			{
 				Flemming::outMessageToUser(infoOutputText);
 			}
-			else {
-				if (Flemming::isThisCommand(checkArgumentString, argv[1]))
+			 
+		if (Flemming::isThisCommand(checkArgumentString, argv[1]))
 				{
 					Flemming::outMessageToUser(checkNoPathErrorText);
 				}
-				else {
-					if (Flemming::isThisCommand(checkSystemFoulderArgumentString, argv[1]))
-					{
-						ScanSystemFolder();
-					}
-					else {
-						Flemming::outMessageToUser(wrongArgumentsErrorString);
-					}
-				}
+				
+		if (Flemming::isThisCommand(checkSystemFoulderArgumentString, argv[1]))
+			{
+					ScanSystemFolder();
 			}
-		}
+		else {
+				Flemming::outMessageToUser(wrongArgumentsErrorString);
+			 }
 		break;
+
 	case 3:
+		fillFileList(argv[2]);
+
 		if (Flemming::isThisCommand(checkArgumentString, argv[1]))
 		{
 			ToScan(argv[2], true);
@@ -203,9 +203,16 @@ bool Flemming::startWork(int argc, char** argv)
 			Flemming::outMessageToUser(wrongArgumentsErrorString);
 		}
 		break;
+
 	default:
 		Flemming::outMessageToUser(wrongArgumentsNumberErrorString);
 		break;
+
 	}
 	return true;
+}
+
+void Flemming::fillFileList(const char* inString)
+{
+	allFilesInfo = new FileContainer(std::string(inString));
 }

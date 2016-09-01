@@ -145,3 +145,7 @@ int SignatureAnalyser::ScanDescriptor(const char* pathToFile, std::vector<std::s
 	yr_finalize();	
 	return CALLBACK_MSG_FILE;
 }
+
+std::vector<std::string> SignatureAnalyser::GetAllSuspectedFiles() {
+	return log->GetAllSuspectedFiles();
+}

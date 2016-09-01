@@ -24,10 +24,14 @@
 #include <conio.h>
 #include <windows.h>
 #include "Flemming\OSAPI.h"
+
+
 int main(int argc, char* argv[])
 {
+
 	Flemming application;
 	application.startWork(argc, argv);
+
 	
 	return 0;
 }

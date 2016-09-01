@@ -44,7 +44,7 @@ public:
 	int ScanSingleFile(const char*);
 	int ScanMem();
 	int ScanDescriptor(const char* pathToFile, std::vector<std::string>, LPCWSTR (const char*));
-
+	std::vector<std::string> GetAllSuspectedFiles();
 private:	
 
 	static char signatureName[128]; ///> Name of signature in string format
