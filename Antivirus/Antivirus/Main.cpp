@@ -19,101 +19,19 @@
 
 #include <iostream>
 #include <stdio.h>
-#include <omp.h>
 #include "Flemming\Flemming.h"
+#include <direct.h>
+#include <conio.h>
+#include <windows.h>
+#include "Flemming\OSAPI.h"
 
-/*
-	@brief Processing of entered command
-
-	If type one argument: Error. The Flemming must launch with one or more parametres
-	Two arguments:
-		It can be command: '-checksys', '-help', '-info'
-		Else it error command
-
-	Three arguments:
-		It can be command '-check', third argument is path to check file or folder
-		Else it error command
-*/
 
 int main(int argc, char* argv[])
 {
+
 	Flemming application;
-	//double start_time, end_time;
-	//start_time = omp_get_wtime();
-	//test//	
-	//
-	//				application.ToScanWithQ("D:\\viruses\\");	
-	//
-	//	application.ScanMemory();
-	//test
+	application.startWork(argc, argv);
 
-	//end_time = omp_get_wtime();
-	//printf("time = %f", (end_time - start_time));
-
-	switch (argc) {
-	case 1:
-		Flemming::outMessageToUser(application.wrongArgumentsNumberErrorString);
-		break;
-	case 2:
-		if (Flemming::isThisCommand(application.helpArgumentString, argv[1]))
-		{
-			Flemming::outMessageToUser(application.helpOutputText);
-		}
-		else {
-			if (Flemming::isThisCommand(application.infoArgumentString, argv[1]))
-			{
-				Flemming::outMessageToUser(application.infoOutputText);
-			}
-			else {
-				if (Flemming::isThisCommand(application.checkArgumentString, argv[1]))
-				{
-					Flemming::outMessageToUser(application.checkNoPathErrorText);
-				}
-				else {
-					if (Flemming::isThisCommand(application.checkSystemFoulderArgumentString, argv[1]))
-					{
-						//check system foulder
-					}
-					else {
-						Flemming::outMessageToUser(application.wrongArgumentsErrorString);
-					}
-				}
-			}
-		}
-		break;
-	case 3:
-		if (Flemming::isThisCommand(application.checkArgumentString, argv[1]))
-		{
-			application.ToScan(argv[2],true);
-		}
-		if (Flemming::isThisCommand(application.checkArgumentWithQuarantineString, argv[1]))
-		{
-			application.ToScanWithQ(argv[2],true);
-		}
-		if (Flemming::isThisCommand(application.fullCheckArgumentWithQuarantineString, argv[1]))
-		{
-			application.ToScanWithQ(argv[2], false);
-		}
-		if (Flemming::isThisCommand(application.fullCheckArgumentString, argv[1]))
-		{
-			application.ToScan(argv[2], false);
-		}
-		if (Flemming::isThisCommand(application.CheckArgumentDescriptorString, argv[1]))
-		{
-			application.ToScanDesc(argv[2]);
-		}
-		if (Flemming::isThisCommand(application.checkMemoryString, argv[1]))
-		{
-			application.ScanMemory();
-		}
-		else
-		{
-			Flemming::outMessageToUser(application.wrongArgumentsErrorString);
-		}
-		break;
-	default:
-		Flemming::outMessageToUser(application.wrongArgumentsNumberErrorString);
-		break;
-	}
+	
 	return 0;
 }

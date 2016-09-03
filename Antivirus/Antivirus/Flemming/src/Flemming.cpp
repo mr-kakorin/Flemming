@@ -20,47 +20,11 @@
 #include <iostream>
 #include "Flemming\Flemming.h"
 #include "Flemming\Logger.h"
-#include <ctime>
+#include "Flemming\SharedMethods.h"
+#include "Flemming\OSAPI.h"
 
 SignatureAnalyser* Flemming::analyser = new SignatureAnalyser;
-Quarantine* Flemming::quarantiner = new Quarantine(GetConsoleWindow());
-
-bool Flemming::isDirectoryExists(LPCWSTR directoryNameToCheck)
-{
-	DWORD dwordFileAttributes = GetFileAttributes(directoryNameToCheck);
-	if (dwordFileAttributes == INVALID_FILE_ATTRIBUTES) return false;
-	return dwordFileAttributes & FILE_ATTRIBUTE_DIRECTORY;
-}
-
-bool Flemming::isFileExists(LPCWSTR fileNameToCheck)
-{
-	return GetFileAttributes(fileNameToCheck) != INVALID_FILE_ATTRIBUTES;
-}
-
-LPCWSTR Flemming::charToLpcwstr(const char* stringToConvert)
-{
-	wchar_t* result = new wchar_t[2048];
-	MultiByteToWideChar(0, 0, stringToConvert, -1, result, 2048);
-	return result;
-}
-
-Flemming::PathTo Flemming::isPathToFile(const char* stringToCheck)
-{
-	LPCWSTR path = charToLpcwstr(stringToCheck);
-
-	if (isDirectoryExists(path))
-	{
-		return PathToFolder;
-	}
-
-	if (isFileExists(path))
-	{
-		return PathToFile;
-	}
-
-	return NotExist;
-}
-Logger* logger = new Logger;
+Quarantine* Flemming::quarantiner = new Quarantine;
 
 void Flemming::ToScan(const char* inString, bool scantype)
 {
@@ -68,25 +32,25 @@ void Flemming::ToScan(const char* inString, bool scantype)
 	std::vector<std::string> files;
 	std::pair<std::vector<std::string>, std::vector<std::string>> subFilesFolders = std::make_pair(folders, files);
 	std::vector<std::string> filesToQuarantine;
-	switch (isPathToFile(inString))
+
+	switch (OSAPI::PathIs(inString))
 	{
-	case PathToFile:
+	case OSAPI::PathToFile:
 		//std::cout << "Checking the file \"" << inString << "\t";
 		analyser->ScanSingleFile(inString);
 		break;
-	case PathToFolder:
+	case OSAPI::PathToFolder:
 
-		subFilesFolders = SeeFilesFolders(inString);
+		subFilesFolders = OSAPI::SeeFilesFolders(inString);
 		for (int i = 0; i < subFilesFolders.first.size();++i)
 		{
-			ToScanWoCheck(getFullNameFolder(subFilesFolders.first.at(i), inString).data(), scantype);
+			ToScanWoCheck(SharedMethods::getFullNameFolder(subFilesFolders.first.at(i), inString).data(), scantype);
 			
 		}		
 			analyser->Scanfile(inString, subFilesFolders.second, scantype);
 
-
 		break;
-	case NotExist:
+	case OSAPI::NotExist:
 		//std::cout << std::endl << inString << " : There is no such file or directory.\n";
 		break;
 	}
@@ -98,67 +62,14 @@ void Flemming::ToScanWoCheck(const char* inString, bool scantype)
 	std::vector<std::string> files;
 	std::pair<std::vector<std::string>, std::vector<std::string>> subFilesFolders = std::make_pair(folders, files);
 
-    subFilesFolders = SeeFilesFolders(inString);
+    subFilesFolders = OSAPI::SeeFilesFolders(inString);
 
 		for (int i = 0; i < subFilesFolders.first.size();++i)
 		{
-			ToScanWoCheck(getFullNameFolder(subFilesFolders.first.at(i), inString).data(), scantype);
+			ToScanWoCheck(SharedMethods::getFullNameFolder(subFilesFolders.first.at(i), inString).data(), scantype);
 		}
 		analyser->Scanfile(inString, subFilesFolders.second, scantype);
 	
-}
-
-std::pair<std::vector<std::string>, std::vector<std::string>> Flemming::SeeFilesFolders(const char* inString)
-{
-	std::vector<std::string> folders;
-	std::vector<std::string> files;
-	GetFoldersAndFilesList((std::string)(inString), folders, files);
-	return std::make_pair(folders, files);
-}
-
-std::string Flemming::getFullNameFile(const std::string& fName, const char* inString)
-{
-	std::string tmp = (std::string)(inString) + fName;
-	return tmp;
-}
-
-std::string Flemming::getFullNameFolder(const std::string& fName, const char* inString)
-{
-	std::string tmp = (std::string)(inString) + fName + "\\";
-	return tmp;
-}
-
-void Flemming::GetFoldersAndFilesList(std::string path,
-	std::vector<std::string> &folders,
-	std::vector<std::string> &files)
-{
-	WIN32_FIND_DATA FindFileData;
-	HANDLE hf;
-	path += "/*";
-	int len;
-	int slength = (int)path.length() + 1;
-	len = MultiByteToWideChar(CP_ACP, 0, path.c_str(), slength, 0, 0);
-	wchar_t* buf = new wchar_t[len];
-	MultiByteToWideChar(CP_ACP, 0, path.c_str(), slength, buf, len);
-	std::wstring stemp(buf);
-	delete[] buf;
-	LPCWSTR result = stemp.c_str();
-	hf = FindFirstFile(result, &FindFileData);
-	if (hf != INVALID_HANDLE_VALUE) {
-		do {
-			std::wstring wfilename(FindFileData.cFileName);
-			std::string sfilename(wfilename.begin(), wfilename.end());
-			if (FindFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
-				if (sfilename != "." && sfilename != "..") {
-					folders.push_back(sfilename);
-				}
-			}
-			else {
-				files.push_back(sfilename);
-			}
-		} while (FindNextFile(hf, &FindFileData) != 0);
-		FindClose(hf);
-	}
 }
 
 void Flemming::outMessageToUser(const std::string& message)
@@ -186,30 +97,10 @@ void Flemming::ScanMemory()
 	analyser->ScanMem();	
 }
 
-std::string Flemming::getSystemDirectory() {
-	const UINT size = 300; // consistent value
-	TCHAR infoBuf[size];
-	std::string ret;
-	if (!GetWindowsDirectory(infoBuf, size)) {
-		throw ERROR("failed to get windows directory");
-	}
-	else {
-		for (int i = 0;i < size; ++i) {
-			if (!infoBuf[i]) {
-				break;
-			}
-			else {
-				ret += char(infoBuf[i]);
-			}
-		}
-	}
-	return (ret + "\\");
-}
-
 void Flemming::ScanSystemFolder()
 {
 	try {
-		ToScan(getSystemDirectory().data(),false);
+		ToScan(OSAPI::getSystemDirectory().data(),false);
 	}
 	catch (const char* e)
 	{
@@ -221,15 +112,15 @@ void Flemming::ToScanWithQ(const char* inString, bool scantype)
 {
 	ToScan(inString, scantype);
 
-	std::vector<std::string> filesToQuarantine = logger->GetAllSuspectedFiles();
+	std::vector<std::string> filesToQuarantine = analyser->GetAllSuspectedFiles();
 	if (!filesToQuarantine.empty())
 	{
 		for (int i = 0;i < filesToQuarantine.size();++i)
 		{
 			quarantiner->putToQuarantine(filesToQuarantine.at(i));
-			//std::cout << filesToQuarantine.at(i) << std::endl;
+			
 		}
-		quarantiner->CrypterQuarantineFiles(SeeFilesFolders, getFullNameFile);
+		quarantiner->CrypterQuarantineFiles();
 	}
 }
 
@@ -239,11 +130,89 @@ void Flemming::ToScanDesc(const char* inString)
 	std::vector<std::string> files;
 	std::pair<std::vector<std::string>, std::vector<std::string>> subFilesFolders = std::make_pair(folders, files);
 
-	subFilesFolders = SeeFilesFolders(inString);
+	subFilesFolders = OSAPI::SeeFilesFolders(inString);
 
 	for (int i = 0; i < subFilesFolders.first.size();++i)
 	{
-		ToScanDesc(getFullNameFolder(subFilesFolders.first.at(i), inString).data());
+		ToScanDesc(SharedMethods::getFullNameFolder(subFilesFolders.first.at(i), inString).data());
 	}
-	analyser->ScanDescriptor(inString, subFilesFolders.second, charToLpcwstr);
+	analyser->ScanDescriptor(inString, subFilesFolders.second, OSAPI::charToLpcwstr);
+}
+
+bool Flemming::startWork(int argc, char** argv)
+{
+	switch (argc) {
+	case 1:
+		Flemming::outMessageToUser(wrongArgumentsNumberErrorString);
+		break;
+
+	case 2:
+		if (Flemming::isThisCommand(helpArgumentString, argv[1]))
+		{
+			Flemming::outMessageToUser(helpOutputText);
+		}
+		
+		if (Flemming::isThisCommand(infoArgumentString, argv[1]))
+			{
+				Flemming::outMessageToUser(infoOutputText);
+			}
+			 
+		if (Flemming::isThisCommand(checkArgumentString, argv[1]))
+				{
+					Flemming::outMessageToUser(checkNoPathErrorText);
+				}
+				
+		if (Flemming::isThisCommand(checkSystemFoulderArgumentString, argv[1]))
+			{
+					ScanSystemFolder();
+			}
+		else {
+				Flemming::outMessageToUser(wrongArgumentsErrorString);
+			 }
+		break;
+
+	case 3:
+		fillFileList(argv[2]);
+
+		if (Flemming::isThisCommand(checkArgumentString, argv[1]))
+		{
+			ToScan(argv[2], true);
+		}
+		if (Flemming::isThisCommand(checkArgumentWithQuarantineString, argv[1]))
+		{
+			ToScanWithQ(argv[2], true);
+		}
+		if (Flemming::isThisCommand(fullCheckArgumentWithQuarantineString, argv[1]))
+		{
+			ToScanWithQ(argv[2], false);
+		}
+		if (Flemming::isThisCommand(fullCheckArgumentString, argv[1]))
+		{
+		    ToScan(argv[2], false);
+		}
+		if (Flemming::isThisCommand(CheckArgumentDescriptorString, argv[1]))
+		{
+			ToScanDesc(argv[2]);
+		}
+		if (Flemming::isThisCommand(checkMemoryString, argv[1]))
+		{
+			ScanMemory();
+		}
+		else
+		{
+			Flemming::outMessageToUser(wrongArgumentsErrorString);
+		}
+		break;
+
+	default:
+		Flemming::outMessageToUser(wrongArgumentsNumberErrorString);
+		break;
+
+	}
+	return true;
+}
+
+void Flemming::fillFileList(const char* inString)
+{
+	allFilesInfo = new FileContainer(std::string(inString));
 }

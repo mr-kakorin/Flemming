@@ -13,18 +13,25 @@
   <ItemGroup>
     <ClCompile Include="Flemming\src\Crypter.cpp" />
     <ClCompile Include="Flemming\src\ExtensionAnalyser.cpp" />
+    <ClCompile Include="Flemming\src\FileContainer.cpp" />
     <ClCompile Include="Flemming\src\Flemming.cpp" />
     <ClCompile Include="Flemming\src\Logger.cpp" />
+    <ClCompile Include="Flemming\src\OSAPI.cpp" />
     <ClCompile Include="Flemming\src\Quarantine.cpp" />
+    <ClCompile Include="Flemming\src\SharedMethods.cpp" />
     <ClCompile Include="Flemming\src\SignatureAnalyser.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Flemming\CommonHeaders.h" />
     <ClInclude Include="Flemming\Crypter.h" />
     <ClInclude Include="Flemming\ExtensionAnalyser.h" />
+    <ClInclude Include="Flemming\FileContainer.h" />
     <ClInclude Include="Flemming\Flemming.h" />
     <ClInclude Include="Flemming\Logger.h" />
+    <ClInclude Include="Flemming\OSAPI.h" />
     <ClInclude Include="Flemming\Quarantine.h" />
+    <ClInclude Include="Flemming\SharedMethods.h" />
     <ClInclude Include="Flemming\SignatureAnalyser.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

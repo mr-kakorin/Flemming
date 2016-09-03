@@ -18,15 +18,8 @@
 */
 
 #include <iostream>
+#include "Flemming\SharedMethods.h"
 #include "Flemming\SignatureAnalyser.h"
-
-const char* SignatureAnalyser::getFullNameFile(const std::string& fName, const char* inString)const
-{
-	char buf[128];
-	strcpy(buf, inString);
-	strcat(buf, fName.data());
-	return buf;
-}
 
 Logger* SignatureAnalyser::log = new Logger;
 ExtensionAnalyser* SignatureAnalyser::extAnalyser = new ExtensionAnalyser;
@@ -45,6 +38,7 @@ SignatureAnalyser::~SignatureAnalyser()
 
 
 char SignatureAnalyser::signatureName[128] = {};
+
 int SignatureAnalyser::CALLBACK_MSG_FILE = 0;
 
 int SignatureAnalyser::callback_function_forfile(int message, void* message_data, void* user_data)
@@ -66,25 +60,25 @@ int SignatureAnalyser::Scanfile(const char * pathToFile, std::vector<std::string
 	yr_initialize();
 	YR_RULES* rules = NULL;
 	yr_rules_load(Librarry_file, &rules);	
-	const char* str;
+	std::string str;
 	int count = files.size();
 	if (fastscan)
 		for (int i = 0; i < count; ++i)
 		{						
 			if (extAnalyser->checkExtension(files.at(i).data()))
 			{
-				str = getFullNameFile(files.at(i), pathToFile);
-				yr_rules_scan_file(rules, str, ScanType, callback_function_forfile, NULL, 0);
-				log->writeLog(str, (CALLBACK_MSG_FILE ? true : false), signatureName);
+				str = SharedMethods::getFullNameFile(files.at(i), pathToFile);
+				yr_rules_scan_file(rules, str.data(), ScanType, callback_function_forfile, NULL, 0);
+				log->writeLog(str.data(), (CALLBACK_MSG_FILE ? true : false), signatureName);
 
 			}
 		}	
 	else
 		for (int i = 0; i < count; ++i)
 		{			
-				str = getFullNameFile(files.at(i), pathToFile);
-				yr_rules_scan_file(rules, str, ScanType, callback_function_forfile, NULL, 0);
-				log->writeLog(str, (CALLBACK_MSG_FILE ? true : false), signatureName);			
+				str = SharedMethods::getFullNameFile(files.at(i), pathToFile);
+				yr_rules_scan_file(rules, str.data(), ScanType, callback_function_forfile, NULL, 0);
+				log->writeLog(str.data(), (CALLBACK_MSG_FILE ? true : false), signatureName);			
 		}
 	yr_finalize();
 	return CALLBACK_MSG_FILE;
@@ -133,21 +127,25 @@ int SignatureAnalyser::ScanDescriptor(const char* pathToFile, std::vector<std::s
 	yr_initialize();
 	YR_RULES* rules = NULL;
 	yr_rules_load(Librarry_file_fd, &rules);
-	const char* str;
+	std::string str;
 	int count = files.size();
 	for (int i = 0; i < count; ++i)
 	{
-		str = getFullNameFile(files.at(i), pathToFile);
+		str = SharedMethods::getFullNameFile(files.at(i), pathToFile);
 		yr_rules_scan_fd(rules,
-			CreateFile(charTolpc(str),
+			CreateFile(charTolpc(str.data()),
 				FILE_READ_DATA | FILE_READ_ATTRIBUTES | FILE_READ_EA,
 				FILE_SHARE_READ, NULL,
 				OPEN_ALWAYS,
 				FILE_ATTRIBUTE_READONLY,
 				NULL),
 			ScanType, callback_function_forfile, NULL, 0);
-		log->writeLog(str, (CALLBACK_MSG_FILE ? true : false), signatureName);
+		log->writeLog(str.data(), (CALLBACK_MSG_FILE ? true : false), signatureName);
 	}
 	yr_finalize();	
 	return CALLBACK_MSG_FILE;
+}
+
+std::vector<std::string> SignatureAnalyser::GetAllSuspectedFiles() {
+	return log->GetAllSuspectedFiles();
 }

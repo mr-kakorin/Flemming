@@ -20,11 +20,8 @@
 #ifndef _LOGGER_H_
 #define _LOGGER_H_
 
-#include <vector>
-#include <ctime>
-#include <fstream>
-#include <string>
-
+#include "Flemming\CommonHeaders.h"
+#include <direct.h>
 /**
 	@brief Object for work with log files
 
@@ -32,7 +29,7 @@
 */
 class Logger
 {
-	const std::string logFileName; ///>  Name of log-file in String format
+	std::string logFileName; ///>  Name of log-file in String format
 	std::ofstream outLog; ///> Stream for out log-file
 
 public:
@@ -45,7 +42,7 @@ public:
 	/**
 		@brief Default Constructor
 	*/
-	Logger():logFileName("C:\\Antivirus\\log.txt"){}
+	Logger();
 	
 	/**
 	@brief Returns current date and time
