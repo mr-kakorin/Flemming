@@ -42,8 +42,8 @@ public:
 	*/
 	int Scanfile(const char *, std::vector<std::string>, bool);
 	int ScanSingleFile(const char*);
-	int ScanMem();
-	int ScanDescriptor(const char* pathToFile, std::vector<std::string>, LPCWSTR (const char*));
+	int ScanDescriptor(const char*, std::vector<std::string>, LPCWSTR charTolpc(const char *));
+	int ScanMem();	
 	std::vector<std::string> GetAllSuspectedFiles();
 private:	
 
